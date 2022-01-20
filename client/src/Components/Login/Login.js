@@ -1,8 +1,10 @@
-import React, {useState} from "react";
-import {Button, Container, Grid, IconButton, InputAdornment, Paper, TextField} from "@mui/material";
+import React, {useEffect, useState} from "react";
+import {Alert, Button, Container, Grid, IconButton, InputAdornment, Paper, TextField} from "@mui/material";
 import Logo from '../../images/logo.svg';
 import Footer from "../Footer/Footer";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {useDispatch, useSelector} from "react-redux";
+import {register} from "../../actions/auth";
 
 /**
  * Login component
@@ -10,17 +12,35 @@ import {Visibility, VisibilityOff} from "@mui/icons-material";
  * @constructor
  */
 const Login = () => {
+    /**
+     * Dispatch Hook
+     * @type {Dispatch<any>}
+     */
+    const dispatch = useDispatch();
+
+    /**
+     * Hook to retrieve userResponse
+     */
+    const userResponse = useSelector((state) => state.auth);
 
     /**
      * Input data control
      */
     const [inputData, setInputData] = useState({
-        username: null,
-        password: null,
-        firstName: null,
-        lastName: null,
-        confirmPassword: null
+        username: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        confirmPassword: ''
     })
+
+    /**
+     * Alert message state
+     */
+    const [alertMessage, setAlertMessage] = useState({
+        type:'',
+        message:''
+    });
 
     /**
      * Show password state
@@ -44,6 +64,7 @@ const Login = () => {
      */
     const handleRegister = () => {
         setIsRegister((prev) => !prev);
+        resetAlertMessage();
     }
 
     /**
@@ -55,6 +76,42 @@ const Login = () => {
             ...inputData, [e.target.name]: e.target.value
         });
     }
+
+    /**
+     * Handles the form submit event
+     * @param e - Form Submit
+     */
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(isRegister){
+            dispatch(register(inputData));
+        }else {
+
+        }
+    }
+
+    /**
+     * Helper function to reset the state of the alert message
+     */
+    const resetAlertMessage = () => {
+        setAlertMessage({
+            type:'',
+            message: ''
+        });
+    }
+
+    /**
+     * Checks userResponse for updates and sets an alert message
+     */
+    useEffect(() => {
+        setAlertMessage({
+            type:userResponse.type,
+            message: userResponse.message
+        })
+        if(userResponse.type === 'success'){
+            setIsRegister(false);
+        }
+    },[userResponse]);
 
     return (
         <>
@@ -69,11 +126,17 @@ const Login = () => {
                     padding: (theme) => theme.spacing(2),
                     borderRadius: 4,
                 }}>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <Grid container flexDirection="row" spacing={2}>
                             <Grid item xs={12} sm={12}>
                                 <img alt="Logo" src={Logo} width="100%"/>
                             </Grid>
+                            {
+                                alertMessage.type &&
+                                <Grid item xs={12}>
+                                    <Alert severity={alertMessage.type}>{alertMessage.message}</Alert>
+                                </Grid>
+                            }
                             {
                                 isRegister &&
                                 <>
@@ -157,7 +220,7 @@ const Login = () => {
                                 </Grid>
                             }
                             <Grid item xs={12} sm={12}>
-                                <Button variant="contained" fullWidth>
+                                <Button variant="contained" fullWidth type="submit">
                                     {isRegister ? `Register` : `Login`}
                                 </Button>
                             </Grid>
