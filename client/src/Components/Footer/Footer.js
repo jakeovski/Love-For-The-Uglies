@@ -8,7 +8,8 @@ import { styled } from '@mui/material/styles';
  * @type {StyledComponent<PropsOf<OverridableComponent<TypographyTypeMap>> & MUIStyledCommonProps<Theme>, {}, {}>}
  */
 const FooterText = styled(Typography)`
-    color:#fff
+    color:#fff;
+    font-size:1rem
 `;
 
 /**
@@ -19,14 +20,10 @@ const FooterText = styled(Typography)`
 const Footer = () => {
     return(
         <Container maxWidth={false} sx={{
+            minHeight:'10vh',
             textAlign:'center',
-            position:'absolute',
-            bottom:0,
-            left:0,
-            right:0,
-            width: '100vw !important',
+            width: '100%',
             padding:'0.5em',
-            backgroundColor:'rgba(0,0,0,0.06)'
         }}>
             <Tooltip title={`ver ${packageJson.version}`} arrow>
                 <Grid container>
