@@ -4,7 +4,9 @@ import Logo from '../../images/logo.svg';
 import Footer from "../Footer/Footer";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
-import {register} from "../../actions/auth";
+import {login, register} from "../../actions/auth";
+import {useLocation, useNavigate} from "react-router-dom";
+
 
 /**
  * Login component
@@ -17,6 +19,15 @@ const Login = () => {
      * @type {Dispatch<any>}
      */
     const dispatch = useDispatch();
+    /**
+     * Navigate Hook
+     */
+    const navigate = useNavigate();
+    /**
+     * Location Hook
+     * @type {Location<LocationState>}
+     */
+    const location = useLocation();
 
     /**
      * Hook to retrieve userResponse
@@ -86,7 +97,7 @@ const Login = () => {
         if(isRegister){
             dispatch(register(inputData));
         }else {
-
+            dispatch(login(inputData,navigate));
         }
     }
 
@@ -108,10 +119,20 @@ const Login = () => {
             type:userResponse.type,
             message: userResponse.message
         })
-        if(userResponse.type === 'success'){
-            setIsRegister(false);
+        if(isRegister && userResponse.type === 'success'){
+                setIsRegister(false);
         }
     },[userResponse]);
+
+    /**
+     * Check for token, and navigate to home page if already logged in
+     */
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            navigate('/home');
+        }
+    },[location]);
 
     return (
         <>
