@@ -21,6 +21,34 @@ API.interceptors.request.use((config) => {
 })
 
 /**
+ * Response interceptor
+ * Used mainly to refresh the expired token
+ */
+API.interceptors.response.use((response) => {
+    //If the response is successful (Status code: 2xx) => Continue
+    return response;
+},async(error) => {
+    if (error.response.data.data === 'TokenExpiredError'){
+        //Send a refresh token request
+        const res = await API.get(`/auth/refreshToken`);
+        //Store original request
+        const originalRequest = error.config;
+        if (res.data.data) {
+            //Store the new token and repeat the original request
+            originalRequest._retry = true;
+            localStorage.setItem('token',JSON.stringify(res.data.data));
+            axios.defaults.headers.common['authorization'] = `Bearer ${res.data.data}`;
+
+            return API(originalRequest);
+        }else {
+            return Promise.reject(error);
+        }
+    }else{
+        return Promise.reject(error);
+    }
+})
+
+/**
  * Function to call /auth/checkAdminStatus endpoint
  * @returns {Promise<AxiosResponse<any>>}
  */

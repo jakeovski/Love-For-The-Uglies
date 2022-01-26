@@ -12,7 +12,7 @@ const authReducer = (auth={},action) => {
         case CHECK_ADMIN_STATUS:
             return action.data;
         case LOGIN:
-            localStorage.setItem('token',JSON.stringify(action.data.data))
+            localStorage.setItem('token',JSON.stringify(action.data.data.token))
             return action.data;
         case AUTH_ERROR:
             return action.payload;

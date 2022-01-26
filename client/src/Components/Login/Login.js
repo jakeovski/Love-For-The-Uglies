@@ -1,5 +1,15 @@
 import React, {useEffect, useState} from "react";
-import {Alert, Button, Container, Grid, IconButton, InputAdornment, Paper, TextField} from "@mui/material";
+import {
+    Alert,
+    Button,
+    Container,
+    Grid,
+    IconButton,
+    InputAdornment,
+    LinearProgress,
+    Paper,
+    TextField
+} from "@mui/material";
 import Logo from '../../images/logo.svg';
 import Footer from "../Footer/Footer";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
@@ -64,6 +74,11 @@ const Login = () => {
     const [isRegister, setIsRegister] = useState(false);
 
     /**
+     * State that controls the display of the loading bar
+     */
+    const [loading, setLoading] = useState(false);
+
+    /**
      * Show password toggle
      */
     const handleShowPassword = () => {
@@ -94,6 +109,7 @@ const Login = () => {
      */
     const handleSubmit = (e) => {
         e.preventDefault();
+        setLoading(true);
         if(isRegister){
             dispatch(register(inputData));
         }else {
@@ -115,6 +131,7 @@ const Login = () => {
      * Checks userResponse for updates and sets an alert message
      */
     useEffect(() => {
+        setLoading(false);
         setAlertMessage({
             type:userResponse.type,
             message: userResponse.message
@@ -245,6 +262,12 @@ const Login = () => {
                                     {isRegister ? `Register` : `Login`}
                                 </Button>
                             </Grid>
+                            {
+                                loading &&
+                                <Grid item xs={12} sm={12}>
+                                    <LinearProgress/>
+                                </Grid>
+                            }
                             <Grid item xs={12}>
                                 <Button variant="text" fullWidth onClick={handleRegister}>
                                     {isRegister ? `Already have an account? Log in!` : `Don't have an account? Register!`}

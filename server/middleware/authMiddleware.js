@@ -8,28 +8,37 @@ import * as fs from "fs";
  * @param next
  * @returns {Promise<*>}
  */
-const authMiddleware = async (req,res,next) => {
-    try{
+const authMiddleware = async (req, res, next) => {
+    try {
         const token = req.headers.authorization.split(" ")[1];
         const publicKey = fs.readFileSync('./config/public.pem');
         if (token) {
             const data = jwt.verify(token, publicKey);
             req.id = data.context.user?.id;
-        }else {
+        } else {
             return res.status(401).json({
-                data:undefined,
-                type:'error',
-                message:'Unauthorized'
+                data: undefined,
+                type: 'error',
+                message: 'Unauthorized'
             });
         }
         next();
-    }catch (error){
+    } catch (error) {
         console.log(error);
-        return res.status(401).json({
-            data:undefined,
-            type:'error',
-            message:'Token Expired'
-        })
+        //Identify expiry error among the other ones
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({
+                data: error.name,
+                type: 'error',
+                message: 'Token has Expired'
+            })
+        }else {
+            return res.status(401).json({
+                data: error.name,
+                type: 'error',
+                message: 'Invalid Token'
+            })
+        }
     }
 }
 

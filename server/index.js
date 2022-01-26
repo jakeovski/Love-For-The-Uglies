@@ -16,7 +16,6 @@ app.use(cors());
 //Routes
 app.use('/api/auth', authenticateRoutes);
 
-
 //Connect to the database
 mongoose.connect(process.env.CONNECTION_URL)
     .then(() => app.listen(process.env.SERVER_PORT, () => console.log(`Server started at port ${process.env.SERVER_PORT}`)))

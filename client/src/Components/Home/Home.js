@@ -21,11 +21,13 @@ const Home = () => {
      * Navigation Hook
      */
     const navigate = useNavigate();
+
     /**
      * Dispatch Hook
      * @type {Dispatch<any>}
      */
     const dispatch = useDispatch();
+
     /**
      * Select auth object from redux store
      */
@@ -34,7 +36,8 @@ const Home = () => {
     /**
      * State that stores whether the page is loading
      */
-    const [pageLoading,setPageLoading] = useState(false);
+    const [pageLoading,setPageLoading] = useState(true);
+
     /**
      * User object state
      */
@@ -44,6 +47,7 @@ const Home = () => {
         username: '',
         role:''
     });
+
     /**
      * Logout the user
      */
@@ -51,38 +55,21 @@ const Home = () => {
         localStorage.removeItem("token");
         navigate('/');
     }
+
     /**
-     * Check whether the user is authenticated and set the necessary states
+     * Execute when the location changes
      */
     useEffect(() => {
+        //Check token existence, if missing, navigate to login page
         const token = localStorage.getItem("token");
-        if(token){
-            const data = decode(token);
-            //Check whether the token has expired
-            if (new Date().getTime() > data.exp * 1000){
-                console.log('Token has expired');
-                logout();
-            }
+        if (token){
+            //When no user is set, checkPrivileges and set the user in other useEffect
             if (!user.username) {
-                //If role is admin, check whether it is actually an admin
-                if (data.context.user.role === 'admin'){
-                    setPageLoading(true);
-                    console.log('Checking Admin Privileges');
-                    dispatch(checkAdminStatus());
-                    setUser({
-                        firstName: data.context.user.firstName,
-                        lastName:data.context.user.lastName,
-                        username: data.context.user.username,
-                        role:'user'
-                    })
-                }else {
-                    setUser({
-                        firstName: data.context.user.firstName,
-                        lastName:data.context.user.lastName,
-                        username: data.context.user.username,
-                        role:'user'
-                    })
-                }
+                console.log('Checking privileges...');
+                dispatch(checkAdminStatus());
+            }else {
+                //If user state exists, then all good, load the page
+                setPageLoading(false);
             }
         }else {
             navigate('/');
@@ -90,20 +77,40 @@ const Home = () => {
     },[location]);
 
     /**
-     * Set the role based on the response from checkAdminStatus endpoint
+     * Set the user useEffect, triggered by userResponse change
      */
     useEffect(() => {
+            //If role property exists, means privileges were already checked
             if (userResponse.role) {
-                if (userResponse === 'error') {
-                    console.log('Token changed');
+                //If role is 'error', logout
+                if (userResponse.role === 'error') {
                     logout();
                 }else {
-                    setUser({...user,role:userResponse.role});
-                    setPageLoading(false);
+                    //Get the token to set the user
+                    const token = localStorage.getItem("token");
+                    //Check token existence, if missing navigate to login page
+                    if (token) {
+                        //To avoid double setting the user, check whether it already exists
+                        if (!user.username) {
+                            //Decode the token, and set the user state
+                            const data = decode(token);
+                            setUser({
+                                firstName: data.context.user.firstName,
+                                lastName:data.context.user.lastName,
+                                username: data.context.user.username,
+                                role:userResponse.role
+                            })
+                        }
+                        //Show page after all data is set
+                        setPageLoading(false);
+                    }else {
+                        navigate('/');
+                    }
                 }
+            }else if (userResponse.type === 'error') {
+                logout();
             }
     },[userResponse]);
-
 
     return(
         <>

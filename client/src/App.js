@@ -5,7 +5,6 @@ import theme from "./Constants/theme/Theme";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./Components/Home/Home";
 
-//TODO:Refresh token functionality
 const App = () => {
 
 
