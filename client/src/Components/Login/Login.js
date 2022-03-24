@@ -15,7 +15,7 @@ import Footer from "../Footer/Footer";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
 import {useDispatch, useSelector} from "react-redux";
 import {login, register} from "../../actions/auth";
-import {useLocation, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 /**
@@ -23,7 +23,7 @@ import {useLocation, useNavigate} from "react-router-dom";
  * @returns {JSX.Element}
  * @constructor
  */
-const Login = () => {
+const Login = ({alertMessage,setAlertMessage}) => {
     /**
      * Dispatch Hook
      * @type {Dispatch<any>}
@@ -33,11 +33,6 @@ const Login = () => {
      * Navigate Hook
      */
     const navigate = useNavigate();
-    /**
-     * Location Hook
-     * @type {Location<LocationState>}
-     */
-    const location = useLocation();
 
     /**
      * Hook to retrieve userResponse
@@ -54,14 +49,6 @@ const Login = () => {
         lastName: '',
         confirmPassword: ''
     })
-
-    /**
-     * Alert message state
-     */
-    const [alertMessage, setAlertMessage] = useState({
-        type:'',
-        message:''
-    });
 
     /**
      * Show password state
@@ -113,6 +100,7 @@ const Login = () => {
         if(isRegister){
             dispatch(register(inputData));
         }else {
+            resetAlertMessage();
             dispatch(login(inputData,navigate));
         }
     }
@@ -128,20 +116,6 @@ const Login = () => {
     }
 
     /**
-     * Checks userResponse for updates and sets an alert message
-     */
-    useEffect(() => {
-        setLoading(false);
-        setAlertMessage({
-            type:userResponse.type,
-            message: userResponse.message
-        })
-        if(isRegister && userResponse.type === 'success'){
-                setIsRegister(false);
-        }
-    },[userResponse]);
-
-    /**
      * Check for token, and navigate to home page if already logged in
      */
     useEffect(() => {
@@ -149,7 +123,20 @@ const Login = () => {
         if (token) {
             navigate('/home');
         }
-    },[location]);
+    },[]);
+
+    useEffect(() => {
+        if (userResponse.type) {
+            setLoading(false);
+            setAlertMessage({
+                type:userResponse.type,
+                message:userResponse.message
+            });
+            if (userResponse.type === 'success') {
+                setIsRegister(false);
+            }
+        }
+    },[userResponse]);
 
     return (
         <>
@@ -219,7 +206,7 @@ const Login = () => {
                                     variant="outlined"
                                     type={isPassword ? 'password' : 'text'}
                                     required
-                                    value={inputData.password}
+                                    value={inputData.password.trim()}
                                     fullWidth
                                     onChange={handleInputChange}
                                     InputProps={{
@@ -244,7 +231,7 @@ const Login = () => {
                                         required
                                         fullWidth
                                         onChange={handleInputChange}
-                                        value={inputData.confirmPassword}
+                                        value={inputData.confirmPassword.trim()}
                                         InputProps={{
                                             endAdornment: (
                                                 <InputAdornment position="end">

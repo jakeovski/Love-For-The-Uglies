@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import * as fs from "fs";
 import {randomUUID} from 'crypto';
 import RefreshToken from '../models/token.js';
+import {DateTime} from "luxon";
 
 /**
  * Refresh the expired access token
@@ -36,7 +37,7 @@ export const refreshToken = async (req,res) => {
             //Decode the refresh token and generate new access token
             try{
                 const publicKey = fs.readFileSync('./config/public.pem');
-                const privateKey = fs.readFileSync('./config/private.pem')
+                const privateKey = fs.readFileSync('./config/private.pem');
                 const decodedRefresh = jwt.verify(refreshToken.token,publicKey);
 
                 const newToken = jwt.sign({
@@ -87,32 +88,6 @@ export const refreshToken = async (req,res) => {
         })
     }
 }
-/**
- * Check whether the user is an admin
- * @param req
- * @param res
- * @returns {Promise<*>}
- */
-export const checkAdminStatus = async(req,res) => {
-    try{
-        const user = await User.findOne({
-            _id:req.id
-        });
-        return res.status(200).json({
-            data:undefined,
-            role:user.role,
-            type:user.role === 'admin' ? 'success' : 'warning',
-            message:user.role === 'admin' ? 'You are an Admin' : 'You are not an Admin'
-        })
-    }catch(error){
-        return res.status(500).json({
-            data:undefined,
-            type:'error',
-            role:'error',
-            message:'Internal Server Error'
-        })
-    }
-}
 
 /**
  * Authenticate the user
@@ -150,6 +125,8 @@ export const login = async(req,res) => {
                     lastName:user.lastName,
                     username: user.username,
                     role:user.role,
+                    avatar:user.avatar,
+                    created:user.created,
                     key: tokenKey
                 }
             }
@@ -226,6 +203,8 @@ export const register = async (req,res) => {
         //Check if the password is at least 8 characters
         if(password.length < 8) {return res.status(400).json({data:undefined,type:'warning',message:'Password must be at least 8 character'})}
 
+        if(username.length > 15) {return res.secure(400).json({data:undefined,type:'warning',message:'Username must be 15 or less characters'})}
+
         //Create a new user record in the database
         await User.create({
             username:username,
@@ -233,6 +212,7 @@ export const register = async (req,res) => {
             password: await bcrypt.hash(password,12),
             firstName,
             lastName,
+            created: DateTime.now()
         });
 
         return res.status(201).json({

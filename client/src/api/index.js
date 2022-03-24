@@ -30,6 +30,7 @@ API.interceptors.response.use((response) => {
 },async(error) => {
     if (error.response.data.data === 'TokenExpiredError'){
         //Send a refresh token request
+        console.log('Refreshing token...');
         const res = await API.get(`/auth/refreshToken`);
         //Store original request
         const originalRequest = error.config;
@@ -38,7 +39,7 @@ API.interceptors.response.use((response) => {
             originalRequest._retry = true;
             localStorage.setItem('token',JSON.stringify(res.data.data));
             axios.defaults.headers.common['authorization'] = `Bearer ${res.data.data}`;
-
+            console.log('Token refreshed');
             return API(originalRequest);
         }else {
             return Promise.reject(error);
