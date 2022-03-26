@@ -8,7 +8,7 @@ const RefreshToken = mongoose.Schema({
     id:{
         type:String,
     },
-    username:{
+    userId:{
         type:String,
         required:true,
     },

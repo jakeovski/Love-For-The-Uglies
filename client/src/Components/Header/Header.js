@@ -23,10 +23,6 @@ const Header = ({user,setAlertMessage}) => {
      * Logout the user
      */
     const logout = () => {
-        setAlertMessage({
-            type:'',
-            message:''
-        });
         localStorage.removeItem("token");
         navigate('/');
     }
@@ -69,7 +65,7 @@ const Header = ({user,setAlertMessage}) => {
                             <Box sx={{flexGrow:0}}>
                                 <Tooltip title="Open Setting">
                                     <IconButton onClick={handleMenuOpen} sx={{p:0}}>
-                                        <Avatar alt={user.username} src={user.image} sx={{
+                                        <Avatar alt={user.username} src={user.avatar} sx={{
                                             backgroundColor: theme.palette.primary.main
                                         }}>
                                             {user.username.charAt(0)}

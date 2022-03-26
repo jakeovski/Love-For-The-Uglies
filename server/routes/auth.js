@@ -1,6 +1,6 @@
 import express from 'express';
-import {login, refreshToken, register} from "../controllers/auth.js";
-import middleware from '../middleware/authMiddleware.js';
+import {getUserData, login, refreshToken, register} from "../controllers/auth.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 //Routes for the /auth endpoint
 
 const router = express.Router();
@@ -9,5 +9,6 @@ const router = express.Router();
 router.post('/login',login);
 router.post('/register',register);
 router.get('/refreshToken',refreshToken);
+router.get('/user',authMiddleware,getUserData);
 
 export default router;

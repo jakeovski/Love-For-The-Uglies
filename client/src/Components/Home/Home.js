@@ -5,6 +5,7 @@ import decode from 'jwt-decode';
 import {CircularProgress} from "@mui/material";
 import Header from "../Header/Header";
 import Profile from "../Profile/Profile";
+import {getUserData} from '../../actions/auth';
 
 /**
  * Main component that stores content for authenticated user
@@ -29,16 +30,7 @@ const Home = ({pageLoading,setPageLoading,user,setUser,setAlertMessage}) => {
         const token = localStorage.getItem("token");
         try{
             if(token) {
-                const data = decode(token);
-                setUser({
-                    firstName: data.context.user.firstName,
-                    lastName:data.context.user.lastName,
-                    username: data.context.user.username,
-                    role:data.context.user.role,
-                    avatar:data.context.user.avatar,
-                    created:data.context.user.created
-                });
-                setPageLoading(false);
+                dispatch(getUserData(setAlertMessage,navigate,setUser,setPageLoading));
             }else {
                 navigate('/');
             }

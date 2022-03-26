@@ -45,7 +45,7 @@ const App = () => {
                         {/*    <Route index={false} path="profile" element={<Profile user={user} setUser={setUser} authCheck={authCheck} setAlertMessage={setAlertMessage}/>}/>*/}
                         {/*</Route>*/}
                         <Route path="/home" element={<Home pageLoading={pageLoading} setPageLoading={setPageLoading} user={user} setUser={setUser} setAlertMessage={setAlertMessage}/>}>
-                            <Route path="profile" element={<Profile user={user} setUser={setUser}/>}/>
+                            <Route path="profile" element={<Profile user={user} setUser={setUser} setAlertMessage={setAlertMessage}/>}/>
                         </Route>
                     </Routes>
                 </BrowserRouter>

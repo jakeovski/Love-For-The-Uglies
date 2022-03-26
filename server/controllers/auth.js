@@ -5,7 +5,30 @@ import * as fs from "fs";
 import {randomUUID} from 'crypto';
 import RefreshToken from '../models/token.js';
 import {DateTime} from "luxon";
+import generateTokens from "../config/tokenHelper.js";
 
+
+
+export const getUserData = async (req,res) => {
+    try{
+        const user = await User.findOne({
+            _id:req.id
+        }).select('-usernameUpper -password');
+
+        return res.status(200).json({
+            data:user,
+            type:'success',
+            message:'Success'
+        })
+    }catch (error){
+        console.log(error);
+        res.status(500).json({
+            data:undefined,
+            type:'error',
+            message:'Error has occurred. Please re-login'
+        })
+    }
+}
 /**
  * Refresh the expired access token
  * @param req
@@ -22,13 +45,13 @@ export const refreshToken = async (req,res) => {
 
         //Check whether a refresh token exists in the database
         const refreshToken = await RefreshToken.findOne({
-            username:decodedExpToken.context.user.username,
+            userId:decodedExpToken.context.user.id,
             tokenKey:decodedExpToken.context.user.key
         });
 
         //If token missing from the database, return
         if (!refreshToken) {
-            return res.status(500).json({
+            return res.status(401).json({
                data:undefined,
                type:'error',
                message:'No session found. Please re-login'
@@ -47,10 +70,6 @@ export const refreshToken = async (req,res) => {
                     context:{
                         user:{
                             id:decodedRefresh.id,
-                            firstName:decodedRefresh.firstName,
-                            lastName:decodedRefresh.lastName,
-                            username: decodedRefresh.username,
-                            role:decodedRefresh.role,
                             key: refreshToken.tokenKey
                         }
                     }
@@ -83,7 +102,6 @@ export const refreshToken = async (req,res) => {
         res.status(500).json({
             data:undefined,
             type:'error',
-            role:'error',
             message:'Error has occurred. Please re-login'
         })
     }
@@ -112,62 +130,8 @@ export const login = async(req,res) => {
         //Create random UUID to make additional reference for refresh token
         const tokenKey = randomUUID();
 
-        //Read the key and sign the token
-        const key = fs.readFileSync('./config/private.pem');
-        const token = jwt.sign({
-            iss: "uglyanimals",
-            sub: user.username,
-            aud:["all"],
-            context:{
-                user:{
-                    id:user._id,
-                    firstName:user.firstName,
-                    lastName:user.lastName,
-                    username: user.username,
-                    role:user.role,
-                    avatar:user.avatar,
-                    created:user.created,
-                    key: tokenKey
-                }
-            }
-        },key,{expiresIn:'30m',algorithm:'RS256'});
-
-        //Sign a refresh token with essential info
-        const refreshToken = jwt.sign({
-            id: user._id,
-            firstName:user.firstName,
-            lastName:user.lastName,
-            username: user.username,
-            role:user.role,
-        },key,{expiresIn:'24h',algorithm:'RS256'});
-
-        //Check if the refresh token already exists
-        const existingRefreshToken = await RefreshToken.findOne({
-           username: user.username
-        });
-
-        //If the token already exists => update the data // If not create a new one
-        if(existingRefreshToken) {
-            await RefreshToken.updateOne({
-                username:user.username,
-            },{
-                tokenKey: tokenKey,
-                token:refreshToken
-            });
-        }else {
-            //Create a new refresh token in the database
-            await RefreshToken.create({
-                tokenKey: tokenKey,
-                username: user.username,
-                token:refreshToken
-            });
-        }
-
         return res.status(200).json({
-            data:{
-                token:token,
-                refreshToken:refreshToken
-            },
+            data:await generateTokens(tokenKey,user),
             type:'success',
             message:''
         })
@@ -203,7 +167,13 @@ export const register = async (req,res) => {
         //Check if the password is at least 8 characters
         if(password.length < 8) {return res.status(400).json({data:undefined,type:'warning',message:'Password must be at least 8 character'})}
 
-        if(username.length > 15) {return res.secure(400).json({data:undefined,type:'warning',message:'Username must be 15 or less characters'})}
+        //Check if the username is the correct length
+        if(username.length > 15) {return res.status(400).json({data:undefined,type:'warning',message:'Username must be 15 or less characters'})}
+
+        //Check the firstName and lastName contain only alphabetical characters
+        if ((firstName.match(/[^a-zA-Z]/g) || []).length > 0 || (lastName.match(/[^a-zA-Z]/g) || []).length > 0) {
+            return  res.status(400).json({data:undefined,type:'warning',message:'First Name and Last Name contain unexpected characters'});
+        }
 
         //Create a new user record in the database
         await User.create({

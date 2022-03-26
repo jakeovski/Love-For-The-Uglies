@@ -15,6 +15,7 @@ const authMiddleware = async (req, res, next) => {
         if (token) {
             const data = jwt.verify(token, publicKey);
             req.id = data.context.user?.id;
+            req.key = data.context.user?.key;
         } else {
             return res.status(401).json({
                 data: undefined,

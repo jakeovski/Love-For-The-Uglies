@@ -126,7 +126,7 @@ const Login = ({alertMessage,setAlertMessage}) => {
     },[]);
 
     useEffect(() => {
-        if (userResponse.type) {
+        if (userResponse.message) {
             setLoading(false);
             setAlertMessage({
                 type:userResponse.type,

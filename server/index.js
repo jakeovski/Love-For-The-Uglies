@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import authenticateRoutes from "./routes/auth.js";
+import profileRoutes from './routes/profile.js';
 
 //Configure env variables
 dotenv.config();
@@ -15,6 +16,7 @@ app.use(cors());
 
 //Routes
 app.use('/api/auth', authenticateRoutes);
+app.use('/api/profile',profileRoutes);
 
 //Connect to the database
 mongoose.connect(process.env.CONNECTION_URL)

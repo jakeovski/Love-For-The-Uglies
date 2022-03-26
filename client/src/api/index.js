@@ -50,12 +50,6 @@ API.interceptors.response.use((response) => {
 })
 
 /**
- * Function to call /auth/checkAdminStatus endpoint
- * @returns {Promise<AxiosResponse<any>>}
- */
-export const checkAdminStatus = () => API.get(`/auth/checkAdminStatus`);
-
-/**
  * Function to call /auth/login endpoint
  * @param inputData
  * @returns {Promise<AxiosResponse<any>>}
@@ -68,3 +62,14 @@ export const login = (inputData) => API.post(`/auth/login`,inputData);
  * @returns {Promise<AxiosResponse<any>>}
  */
 export const register = (inputData) => API.post(`/auth/register`,inputData);
+
+export const getUserData = () => API.get(`/auth/user`);
+
+export const editProfile = (oldUsername, newUserData) => API.patch(`/profile/edit`,{
+    oldUsername:oldUsername,
+    newUserData:newUserData
+});
+
+export const changePassword = (passwordData) => API.patch(`/profile/changePassword`,passwordData);
+
+export const deleteAccount = () => API.delete(`/profile/delete`);
