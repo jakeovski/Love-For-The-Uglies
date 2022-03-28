@@ -4,7 +4,8 @@ import Login from "./Components/Login/Login";
 import theme from "./Constants/theme/Theme";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./Components/Home/Home";
-import Profile from "./Components/Profile/Profile";
+import Profile from "./Components/Home/Profile/Profile";
+import Hub from "./Components/Home/Hub/Hub";
 
 
 //TODO:Add check for login input length
@@ -46,6 +47,7 @@ const App = () => {
                         {/*</Route>*/}
                         <Route path="/home" element={<Home pageLoading={pageLoading} setPageLoading={setPageLoading} user={user} setUser={setUser} setAlertMessage={setAlertMessage}/>}>
                             <Route path="profile" element={<Profile user={user} setUser={setUser} setAlertMessage={setAlertMessage}/>}/>
+                            <Route path="hub" element={<Hub user={user} setAlertMessage={setAlertMessage}/>}/>
                         </Route>
                     </Routes>
                 </BrowserRouter>

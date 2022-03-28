@@ -4,6 +4,8 @@ import dotenv from 'dotenv';
 import mongoose from "mongoose";
 import authenticateRoutes from "./routes/auth.js";
 import profileRoutes from './routes/profile.js';
+import animalRoutes from './routes/animals.js';
+import commentRoutes from './routes/comments.js';
 
 //Configure env variables
 dotenv.config();
@@ -17,6 +19,8 @@ app.use(cors());
 //Routes
 app.use('/api/auth', authenticateRoutes);
 app.use('/api/profile',profileRoutes);
+app.use('/api/animals',animalRoutes);
+app.use('/api/comment',commentRoutes);
 
 //Connect to the database
 mongoose.connect(process.env.CONNECTION_URL)

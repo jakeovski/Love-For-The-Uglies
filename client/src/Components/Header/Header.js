@@ -3,6 +3,7 @@ import {AppBar, Avatar, Box, Grid, IconButton, Menu, MenuItem, Tooltip, Typograp
 import headerImage from '../../images/headerLogo.svg';
 import {useTheme} from "@mui/material";
 import {useNavigate} from "react-router-dom";
+import {Link} from 'react-router-dom';
 
 const Header = ({user,setAlertMessage}) => {
     const theme = useTheme();
@@ -41,13 +42,15 @@ const Header = ({user,setAlertMessage}) => {
                 <Grid container paddingLeft={2}>
                     <Grid container item xs={7} sm={8} lg={6} xl={6} alignItems="center">
                         <Grid item xs={3} sm={3} md={2} lg={2} xl={2} textAlign="center">
-                            <img alt="Header Logo" height={80} src={headerImage}/>
+                            <Link to="/home/hub">
+                                <img alt="Header Logo" height={80} src={headerImage}/>
+                            </Link>
                         </Grid>
                         <Grid item xs={9} sm={9} md={10} lg={10} xl={10}>
                             <Typography sx={{
                                 fontFamily:'Indie Flower',
                                 fontWeight:'bold',
-                                fontSize:'1.7rem'
+                                fontSize:'1.7rem',
                             }}>
                                 LOVE-FOR-THE-UGLIES
                             </Typography>

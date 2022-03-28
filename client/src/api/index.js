@@ -73,3 +73,9 @@ export const editProfile = (oldUsername, newUserData) => API.patch(`/profile/edi
 export const changePassword = (passwordData) => API.patch(`/profile/changePassword`,passwordData);
 
 export const deleteAccount = () => API.delete(`/profile/delete`);
+
+export const getAnimals = () => API.get(`/animals`);
+
+export const addComment = (newComment) => API.post('/comment/add',newComment);
+
+export const getAllComments = () => API.get('/comment');

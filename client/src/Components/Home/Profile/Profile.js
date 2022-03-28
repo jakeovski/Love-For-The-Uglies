@@ -11,15 +11,17 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
-import defaultProfile from '../../images/profile.svg';
+import defaultProfile from '../../../images/profile.svg';
 import FileBase from "react-file-base64";
 import ReactRoundedImage from 'react-rounded-image';
 import {ArrowBack, Delete, Edit} from "@mui/icons-material";
 import {DateTime} from "luxon";
 import {useDispatch} from "react-redux";
-import {changePassword, deleteAccount, editProfile} from "../../actions/profile";
+import {changePassword, deleteAccount, editProfile} from "../../../actions/profile";
 import {useNavigate} from "react-router-dom";
-import CustomDialog from "../Helper/Dialog";
+import CustomDialog from "../../Helper/Dialog";
+import Dropzone from "react-dropzone";
+import {DropzoneContainer} from "../Hub/Comments";
 
 
 const Profile = ({user, setUser, setAlertMessage}) => {
@@ -60,23 +62,35 @@ const Profile = ({user, setUser, setAlertMessage}) => {
 
     const handleImageUpload = (base64) => {
         console.log(base64);
-        if (!base64.type.includes('image')) {
+        if (!base64[0].type.includes('image')) {
             setImageAlertMessage({
                 type: 'error',
                 message: 'The file must be an image!'
             })
+            setUserForm({...userForm, avatar: ''});
         } else {
             setImageAlertMessage({type: '', message: ''});
         }
 
-        const size = parseInt(base64.size.split(" ")[0]);
-        if (size > 3000) {
+        const size = parseInt(base64[0].size);
+        if (size > 1000000) {
             setImageAlertMessage({
                 type: 'error',
-                message: 'Image must be less than 3 MB'
+                message: 'Image must be less than 1 MB'
             })
+            setUserForm({...userForm, avatar: ''});
         } else {
-            setUserForm({...userForm, avatar: base64.base64});
+            const reader = new FileReader();
+            reader.readAsDataURL(base64[0]);
+            reader.onload = () => {
+                setUserForm({...userForm, avatar: reader.result});
+            }
+            reader.onerror = (error) => {
+                setImageAlertMessage({
+                    type:'error',
+                    message: error
+                })
+            }
         }
     }
 
@@ -146,6 +160,10 @@ const Profile = ({user, setUser, setAlertMessage}) => {
             setAlertMessage,navigate,setDialogAlertMessage,setDeleteDialogOpen))
     }
 
+    const handleProfileClose = () => {
+        navigate('/home/hub');
+    }
+
     return (
         <Container maxWidth="md" sx={{marginTop: 2}}>
             <Paper elevation={3} sx={{
@@ -153,7 +171,7 @@ const Profile = ({user, setUser, setAlertMessage}) => {
             }}>
                 <Grid container padding={2}>
                     <Grid item xs={12}>
-                        <IconButton>
+                        <IconButton onClick={handleProfileClose}>
                             <ArrowBack/>
                         </IconButton>
                     </Grid>
@@ -176,7 +194,7 @@ const Profile = ({user, setUser, setAlertMessage}) => {
                         </Grid>
                         {imageAlertMessage.type &&
                             <Grid item xs={12}>
-                                <Alert severity={imageAlertMessage.type}>{setImageAlertMessage.message}</Alert>
+                                <Alert severity={imageAlertMessage.type}>{imageAlertMessage.message}</Alert>
                             </Grid>
                         }
                     </Grid>
@@ -227,8 +245,16 @@ const Profile = ({user, setUser, setAlertMessage}) => {
                                     <Typography fontWeight="bold">Avatar:</Typography>
                                 </Grid>
                                 <Grid item xs="auto">
-                                    <FileBase type="file" multiple={false}
-                                              onDone={(base64) => handleImageUpload(base64)}/>
+                                    <Dropzone onDrop={handleImageUpload}>
+                                        {({getRootProps,getInputProps}) => (
+                                            <section>
+                                                <DropzoneContainer theme={theme} {...getRootProps()}>
+                                                    <input {...getInputProps()}/>
+                                                    <p>Drag 'n' drop an image here, or click to select an image</p>
+                                                </DropzoneContainer>
+                                            </section>
+                                        )}
+                                    </Dropzone>
                                 </Grid>
                             </Grid>
                         }

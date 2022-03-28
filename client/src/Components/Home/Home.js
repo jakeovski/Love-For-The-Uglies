@@ -4,8 +4,9 @@ import {useDispatch, useSelector} from "react-redux";
 import decode from 'jwt-decode';
 import {CircularProgress} from "@mui/material";
 import Header from "../Header/Header";
-import Profile from "../Profile/Profile";
+import Profile from "./Profile/Profile";
 import {getUserData} from '../../actions/auth';
+import Navbar from "./Navbar";
 
 /**
  * Main component that stores content for authenticated user
@@ -19,6 +20,8 @@ const Home = ({pageLoading,setPageLoading,user,setUser,setAlertMessage}) => {
      */
     const navigate = useNavigate();
 
+    const location = useLocation();
+
     /**
      * Dispatch Hook
      * @type {Dispatch<any>}
@@ -31,6 +34,7 @@ const Home = ({pageLoading,setPageLoading,user,setUser,setAlertMessage}) => {
         try{
             if(token) {
                 dispatch(getUserData(setAlertMessage,navigate,setUser,setPageLoading));
+                if(location.pathname === '/home') navigate('/home/hub');
             }else {
                 navigate('/');
             }
@@ -51,6 +55,10 @@ const Home = ({pageLoading,setPageLoading,user,setUser,setAlertMessage}) => {
                     }}/>
                     :<>
                         <Header user={user} setAlertMessage={setAlertMessage}/>
+                        {
+                            location.pathname !== '/home/profile' &&
+                            <Navbar/>
+                        }
                     <Outlet/>
                     </>
 
