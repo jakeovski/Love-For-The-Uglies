@@ -6,3 +6,5 @@ export const AUTH_ERROR = 'AUTH_ERROR';
 export const GET_ANIMAL = 'GET_ANIMAL';
 export const ADD_COMMENT = 'ADD_COMMENT';
 export const GET_COMMENTS = 'GET_COMMENTS';
+export const ADD_REPLY = 'ADD_REPLY';
+export const ADD_SUBREPLY = 'ADD_SUBREPLY';

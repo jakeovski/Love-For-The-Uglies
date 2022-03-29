@@ -79,3 +79,15 @@ export const getAnimals = () => API.get(`/animals`);
 export const addComment = (newComment) => API.post('/comment/add',newComment);
 
 export const getAllComments = () => API.get('/comment');
+
+export const addReply = (parentComment,comment) => API.post('/comment/addReply',{
+    parentComment,
+    comment
+});
+
+export const addSubReply = (commentId,subReplyPosition,comment,replyTo) => API.post('/comment/addSubReply',{
+    commentId,
+    subReplyPosition,
+    comment,
+    replyTo
+})

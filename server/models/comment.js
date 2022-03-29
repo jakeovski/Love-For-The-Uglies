@@ -8,19 +8,34 @@ const comment = mongoose.Schema({
         type:String,
         required:true
     },
-    commentPosition:{
-        type:Number,
-        required: true
-    },
     parent:{
       type:String,
         default:''
     },
-    replyTo:{
-        type:String,
-    },
     comment:{
         type:String,
+    },
+    subReplies: {
+        type:[
+            {
+                id:{
+                    type:String
+                },
+                userId:{
+                    type:String,
+                },
+                username:{
+                    type:String,
+                },
+                comment:{
+                    type:String,
+                },
+                replyTo:{
+                    type:String,
+                }
+            }
+        ],
+        default:[]
     },
     image:{
         type:String,
@@ -38,6 +53,13 @@ const comment = mongoose.Schema({
         default:0
     },
     surprisedLike:{
+        type:Number,
+        default:0
+    },
+    createdAt:{
+        type:Date,
+    },
+    numberOfComments:{
         type:Number,
         default:0
     }

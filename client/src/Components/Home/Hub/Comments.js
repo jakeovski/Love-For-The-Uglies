@@ -22,7 +22,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import OutletIcon from '@mui/icons-material/Outlet';
 import {useDispatch, useSelector} from "react-redux";
-import {addComment, getAllComments} from "../../../actions/comments";
+import {addComment, addReply, addSubReply, getAllComments} from "../../../actions/comments";
 import {useNavigate} from "react-router-dom";
 import Comment from "../../Helper/Comment";
 
@@ -117,11 +117,21 @@ const Comments = ({user,setAlertMessage}) => {
 
     useEffect(() => {
         if(!comments.length > 0) {
+            console.log(comments);
             setCommentsLoading(true);
             dispatch(getAllComments(setAlertMessage,setChatAlertMessage,navigate,setCommentsLoading));
         }
     },[]);
 
+    const handleReplySubmit = (parentComponent,comment) => {
+        dispatch(addReply(setAlertMessage,navigate,setCommentsLoading,setChatAlertMessage,
+            parentComponent,comment));
+    }
+
+    const handleSubReplySubmit = (commentId,subReplyPosition,comment,replyTo) => {
+        dispatch(addSubReply(setAlertMessage,navigate,setCommentsLoading,setChatAlertMessage,
+        commentId,subReplyPosition,comment,replyTo));
+    }
 
     return(
         <Paper elevation={3} sx={{
@@ -163,7 +173,7 @@ const Comments = ({user,setAlertMessage}) => {
                             />
                         </Grid>
                         <Grid item container xs={12} alignItems="center" justifyContent="space-between" mt={1}>
-                            <Grid item xs="auto">
+                            <Grid item xs={7}>
                                 <Dropzone onDrop={handleImageUpload}>
                                     {({getRootProps,getInputProps}) => (
                                         <section>
@@ -218,11 +228,16 @@ const Comments = ({user,setAlertMessage}) => {
             <Divider><Typography variant="h5" fontFamily="Indie Flower">Chat</Typography></Divider>
             {
                 commentsLoading ?
-                    <CircularProgress/>
+                    <Grid item xs={12} textAlign="center">
+                        <CircularProgress/>
+                    </Grid>
                     :
                 comments.length > 0 ?
                     comments.map((comment) => (
-                        <Comment comment={comment} key={comment.comment._id}/>
+                        <Comment comment={comment} key={comment.comment._id}
+                            handleReplySubmit={handleReplySubmit}
+                                 handleSubReplySubmit={handleSubReplySubmit}
+                        />
                     ))
                     :
                     <Alert severity={chatAlertMessage.type ? chatAlertMessage.type : 'info'}>
