@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
     Alert,
-    Avatar, Box, Chip, CircularProgress,
+    Avatar, Box, Button, Chip, CircularProgress,
     Divider,
     Grid,
     IconButton,
@@ -22,7 +22,15 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
 import OutletIcon from '@mui/icons-material/Outlet';
 import {useDispatch, useSelector} from "react-redux";
-import {addComment, addReply, addSubReply, getAllComments} from "../../../actions/comments";
+import {
+    addComment,
+    addReply,
+    addSubReply,
+    deleteComment,
+    deleteSubReply,
+    getAllComments,
+    likeComment
+} from "../../../actions/comments";
 import {useNavigate} from "react-router-dom";
 import Comment from "../../Helper/Comment";
 
@@ -49,6 +57,7 @@ const Comments = ({user,setAlertMessage}) => {
     const navigate = useNavigate();
     const comments = useSelector((state) => state.comments);
     const [newComment,setNewComment] = useState({
+        id:'',
         comment:'',
         image:''
     });
@@ -105,6 +114,7 @@ const Comments = ({user,setAlertMessage}) => {
 
     const handleClearButton = () => {
         setNewComment({
+            id:'',
             comment:'',
             image:''
         });
@@ -133,6 +143,28 @@ const Comments = ({user,setAlertMessage}) => {
         commentId,subReplyPosition,comment,replyTo));
     }
 
+    const handleLikeSubmit = (likeType,commentId,remove) => {
+        dispatch(likeComment(setAlertMessage,navigate,setChatAlertMessage,likeType,commentId,remove));
+    }
+
+    const handleImageRemove = () =>{
+        setNewComment({
+            ...newComment,image:''
+        })
+    }
+
+    const handleCommentDeleteSubmit = (commentId) => {
+        dispatch(deleteComment(setAlertMessage,navigate,setChatAlertMessage,commentId,false));
+    }
+
+    const handleReplyDelete = (replyId,parent) => {
+        dispatch(deleteComment(setAlertMessage,navigate,setChatAlertMessage,replyId,true,parent));
+    }
+
+    const handleSubReplyDeleteSubmit = (subReplyId,replyId,parentId) => {
+        dispatch(deleteSubReply(setAlertMessage,navigate,setChatAlertMessage,subReplyId,replyId,parentId));
+    }
+
     return(
         <Paper elevation={3} sx={{
             mt:1,
@@ -143,6 +175,12 @@ const Comments = ({user,setAlertMessage}) => {
                 <Grid item xs={12}>
                     <Typography variant="h5" sx={{opacity:0.7}}>Create Discussion</Typography>
                 </Grid>
+                {
+                    newComment.id &&
+                    <Grid item xs={12} textAlign="center">
+                        <Typography fontWeight="bold">{`Editing comment`}</Typography>
+                    </Grid>
+                }
                 <Grid item container xs={12} spacing={1} mt={1}>
                     <Grid item xs="auto" justifyContent="flex-end">
                         <Avatar alt={user.username} src={user.avatar} sx={{
@@ -209,14 +247,23 @@ const Comments = ({user,setAlertMessage}) => {
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs="auto">
+                    <Grid item container xs={4}>
                         {
                             newComment.image &&
-                            <img style={{border:`4px solid ${theme.palette.primary.dark}`,borderRadius:10}} src={newComment.image} alt="commentImage" width="100%" height={200}/>
+                            <>
+                            <Grid item xs="auto">
+                                <img style={{border:`4px solid ${theme.palette.primary.dark}`,borderRadius:10}} src={newComment.image} alt="commentImage" width="100%" height={200}/>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button size="small" onClick={handleImageRemove}>Remove image</Button>
+                            </Grid>
+                            </>
                         }
                         {
                             imageAlertMessage.type &&
-                            <Alert severity={imageAlertMessage.type}>{imageAlertMessage.message}</Alert>
+                            <Grid item xs={12}>
+                                <Alert severity={imageAlertMessage.type}>{imageAlertMessage.message}</Alert>
+                            </Grid>
                         }
                     </Grid>
                 </Grid>
@@ -237,6 +284,13 @@ const Comments = ({user,setAlertMessage}) => {
                         <Comment comment={comment} key={comment.comment._id}
                             handleReplySubmit={handleReplySubmit}
                                  handleSubReplySubmit={handleSubReplySubmit}
+                                 handleLikeSubmit={handleLikeSubmit}
+                                 role={user.role}
+                                 userId={user.id}
+                                 setNewComment={setNewComment}
+                                 handleCommentDeleteSubmit={handleCommentDeleteSubmit}
+                                 handleReplyDelete={handleReplyDelete}
+                                 handleSubReplyDeleteSubmit={handleSubReplyDeleteSubmit}
                         />
                     ))
                     :

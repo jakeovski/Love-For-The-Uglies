@@ -26,6 +26,7 @@ const App = () => {
      * User object state
      */
     const [user,setUser] = useState({
+        id:'',
         firstName:'',
         lastName:'',
         username: '',

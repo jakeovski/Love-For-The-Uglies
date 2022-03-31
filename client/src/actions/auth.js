@@ -9,6 +9,7 @@ export const getUserData = (setAlertMessage,navigate,setUser,setPageLoading) => 
     try {
         const {data} = await api.getUserData();
         setUser({
+            id:data.data._id,
             firstName: data.data.firstName,
             lastName:data.data.lastName,
             username: data.data.username,

@@ -91,3 +91,15 @@ export const addSubReply = (commentId,subReplyPosition,comment,replyTo) => API.p
     comment,
     replyTo
 })
+
+export const likeComment = (likeType,commentId,remove) => API.patch('/comment/like',{
+    likeType,
+    commentId,
+    remove
+})
+
+export const deleteComment = (commentId) => API.delete(`/comment/delete/${commentId}`);
+
+export const deleteReply = (replyId,parent) => API.delete(`/comment/deleteReply/${parent}/${replyId}`);
+
+export const deleteSubReply = (subReplyId,replyId,parentId) => API.delete(`/comment/deleteSubReply/${parentId}/${replyId}/${subReplyId}`);

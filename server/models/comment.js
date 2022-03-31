@@ -41,20 +41,20 @@ const comment = mongoose.Schema({
         type:String,
     },
     thumbsUp:{
-        type:Number,
-        default:0
+        type:[],
+        default:[]
     },
     thumbsDown:{
-        type:Number,
-        default: 0
+        type:[],
+        default:[]
     },
     fireLike:{
-        type:Number,
-        default:0
+        type:[],
+        default:[]
     },
     surprisedLike:{
-        type:Number,
-        default:0
+        type:[],
+        default:[]
     },
     createdAt:{
         type:Date,

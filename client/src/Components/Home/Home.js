@@ -28,7 +28,6 @@ const Home = ({pageLoading,setPageLoading,user,setUser,setAlertMessage}) => {
      */
     const dispatch = useDispatch();
 
-
     useEffect(() => {
         const token = localStorage.getItem("token");
         try{
@@ -43,6 +42,10 @@ const Home = ({pageLoading,setPageLoading,user,setUser,setAlertMessage}) => {
             navigate('/');
         }
     },[]);
+
+    useEffect(() => {
+        if(location.pathname === '/home') navigate('/home/hub');
+    },[location]);
 
     return(
         <>
