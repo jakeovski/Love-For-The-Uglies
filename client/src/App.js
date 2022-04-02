@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {Container, CssBaseline, ThemeProvider} from "@mui/material";
 import Login from "./Components/Login/Login";
 import theme from "./Constants/theme/Theme";
@@ -6,33 +6,33 @@ import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Home from "./Components/Home/Home";
 import Profile from "./Components/Home/Profile/Profile";
 import Hub from "./Components/Home/Hub/Hub";
+import Events from "./Components/Home/Events/Events";
 
 
-//TODO:Add check for login input length
 const App = () => {
 
-    const [pageLoading,setPageLoading] = useState(true);
+    const [pageLoading, setPageLoading] = useState(true);
 
 
     /**
      * Alert message state
      */
     const [alertMessage, setAlertMessage] = useState({
-        type:'',
-        message:''
+        type: '',
+        message: ''
     });
 
     /**
      * User object state
      */
-    const [user,setUser] = useState({
-        id:'',
-        firstName:'',
-        lastName:'',
+    const [user, setUser] = useState({
+        id: '',
+        firstName: '',
+        lastName: '',
         username: '',
-        role:'',
-        avatar:'',
-        created:''
+        role: '',
+        avatar: '',
+        created: ''
     });
 
     return (
@@ -42,13 +42,13 @@ const App = () => {
                 <BrowserRouter>
                     <Routes>
                         <Route index element={<Login alertMessage={alertMessage} setAlertMessage={setAlertMessage}/>}/>
-                        {/*<Route path="/home">*/}
-                        {/*    <Route index element={<Home setAlertMessage={setAlertMessage} user={user} setUser={setUser} pageLoading={pageLoading} authCheck={authCheck}/>}/>*/}
-                        {/*    <Route index={false} path="profile" element={<Profile user={user} setUser={setUser} authCheck={authCheck} setAlertMessage={setAlertMessage}/>}/>*/}
-                        {/*</Route>*/}
-                        <Route path="/home" element={<Home pageLoading={pageLoading} setPageLoading={setPageLoading} user={user} setUser={setUser} setAlertMessage={setAlertMessage}/>}>
-                            <Route path="profile" element={<Profile user={user} setUser={setUser} setAlertMessage={setAlertMessage}/>}/>
+                        <Route path="/home"
+                               element={<Home pageLoading={pageLoading} setPageLoading={setPageLoading} user={user}
+                                              setUser={setUser} setAlertMessage={setAlertMessage}/>}>
+                            <Route path="profile" element={<Profile user={user} setUser={setUser}
+                                                                    setAlertMessage={setAlertMessage}/>}/>
                             <Route path="hub" element={<Hub user={user} setAlertMessage={setAlertMessage}/>}/>
+                            <Route path="events" element={<Events setAlertMessage={setAlertMessage} user={user}/>}/>
                         </Route>
                     </Routes>
                 </BrowserRouter>

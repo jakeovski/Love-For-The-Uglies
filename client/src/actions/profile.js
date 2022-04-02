@@ -1,7 +1,6 @@
 import * as api from '../api';
 
 
-
 export const editProfile = (oldUsername,
                             newUserData,
                             navigate,
@@ -10,55 +9,64 @@ export const editProfile = (oldUsername,
                             setBottomLoading,
                             setUser,
                             setUserForm,
-                            setToggleEdit) => async() => {
-    try{
-        const {data} = await api.editProfile(oldUsername,newUserData);
+                            setToggleEdit) => async () => {
+    try {
+        const {data} = await api.editProfile(oldUsername, newUserData);
         setUser(data.data.user);
+        setUser({
+            id: data.data.user._id,
+            firstName: data.data.user.firstName,
+            lastName: data.data.user.lastName,
+            username: data.data.user.username,
+            role: data.data.user.role,
+            avatar: data.data.user.avatar,
+            created: data.data.user.created
+        });
         setUserForm(data.data.user);
-        localStorage.setItem("token",JSON.stringify(data.data.tokens.token));
+        localStorage.setItem("token", JSON.stringify(data.data.tokens.token));
         setBottomLoading(false);
         setToggleEdit(false);
-    }catch (error) {
+    } catch (error) {
         console.log(error.response);
         setBottomLoading(false);
         if (error.response.status === 401) {
             localStorage.removeItem("token");
             setAlertMessage({
-                type:error.response.data.type,
-                message:error.response.data.message
+                type: error.response.data.type,
+                message: error.response.data.message
             })
             navigate('/');
-        }else {
+        } else {
             setProfileAlertMessage({
-                type:error.response.data.type,
-                message:error.response.data.message
+                type: error.response.data.type,
+                message: error.response.data.message
             })
         }
     }
 }
 
-export const changePassword = (passwordData,setDialogButtonLoading,
-                               setAlertMessage,navigate,
+export const changePassword = (passwordData, setDialogButtonLoading,
+                               setAlertMessage, navigate,
                                setDialogAlertMessage,
-                               setPasswordDialogOpen) => async() => {
-    try{
+                               setPasswordDialogOpen) => async () => {
+    try {
         await api.changePassword(passwordData);
         setDialogButtonLoading(false);
         setPasswordDialogOpen(false);
-    }catch (error) {
+    } catch (error) {
         console.log(error.response);
         setDialogButtonLoading(false);
         if (error.response.status === 401) {
             localStorage.removeItem("token");
             setAlertMessage({
-                type:error.response.data.type,
-                message:error.response.data.message
+                type: error.response.data.type,
+                message: error.response.data.message
             })
             navigate('/');
-        }else {
+        } else {
             setDialogAlertMessage({
-                type:error.response.data.type,
-                message:error.response.data.message
+                type: error.response.data.type,
+                message: error.response.data.message
             })
         }
     }
@@ -66,24 +74,24 @@ export const changePassword = (passwordData,setDialogButtonLoading,
 
 
 export const deleteAccount = (setDialogButtonLoading,
-                              setAlertMessage,navigate,setDialogAlertMessage,setDeleteDialogOpen) => async() => {
-    try{
+                              setAlertMessage, navigate, setDialogAlertMessage, setDeleteDialogOpen) => async () => {
+    try {
         await api.deleteAccount();
         localStorage.removeItem("token");
         navigate('/');
-    }catch (error){
+    } catch (error) {
         console.log(error.response);
         if (error.response.status === 401) {
             localStorage.removeItem("token");
             setAlertMessage({
-                type:error.response.data.type,
-                message:error.response.data.message
+                type: error.response.data.type,
+                message: error.response.data.message
             })
             navigate('/');
-        }else {
+        } else {
             setDialogAlertMessage({
-                type:error.response.data.type,
-                message:error.response.data.message
+                type: error.response.data.type,
+                message: error.response.data.message
             })
         }
     }

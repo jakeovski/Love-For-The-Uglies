@@ -5,22 +5,22 @@ import mongoose from "mongoose";
  * @type {*}
  */
 const RefreshToken = mongoose.Schema({
-    id:{
-        type:String,
+    id: {
+        type: String,
     },
-    userId:{
-        type:String,
-        required:true,
+    userId: {
+        type: String,
+        required: true,
     },
-    tokenKey:{
-        type:String,
-        required:true,
-        unique:true
+    tokenKey: {
+        type: String,
+        required: true,
+        unique: true
     },
-    token:{
-        type:String,
+    token: {
+        type: String,
         required: true
     }
 });
 
-export default mongoose.models.refreshTokens || mongoose.model("refreshTokens",RefreshToken);
+export default mongoose.models.refreshTokens || mongoose.model("refreshTokens", RefreshToken);

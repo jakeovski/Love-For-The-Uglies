@@ -2,7 +2,8 @@ import React from 'react';
 import {
     Alert,
     Button,
-    Dialog, DialogActions,
+    Dialog,
+    DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
@@ -40,29 +41,29 @@ const CustomDialog = ({
                 }
                 {passwordData &&
                     <>
-                    <TextField
-                        autoFocus
-                        name="oldPassword"
-                        value={passwordData.oldPassword}
-                        type={showPassword ? "text" : "password"}
-                        required
-                        size="small"
-                        margin="dense"
-                        onChange={(e) => {
-                            setPasswordData({...passwordData,[e.target.name]:e.target.value})
-                        }}
-                        InputProps={{
-                            endAdornment:(
-                                <InputAdornment position="end">
-                                    <IconButton onClick={handleShowPassword}>
-                                        {showPassword ? <VisibilityOff/> : <Visibility/>}
-                                    </IconButton>
-                                </InputAdornment>
-                            )
-                        }}
-                        fullWidth
-                        label="Old Password"
-                    />
+                        <TextField
+                            autoFocus
+                            name="oldPassword"
+                            value={passwordData.oldPassword}
+                            type={showPassword ? "text" : "password"}
+                            required
+                            size="small"
+                            margin="dense"
+                            onChange={(e) => {
+                                setPasswordData({...passwordData, [e.target.name]: e.target.value})
+                            }}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton onClick={handleShowPassword}>
+                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                        </IconButton>
+                                    </InputAdornment>
+                                )
+                            }}
+                            fullWidth
+                            label="Old Password"
+                        />
                         <TextField
                             name="newPassword"
                             value={passwordData.newPassword}
@@ -71,10 +72,10 @@ const CustomDialog = ({
                             size="small"
                             margin="dense"
                             onChange={(e) => {
-                                setPasswordData({...passwordData,[e.target.name]:e.target.value})
+                                setPasswordData({...passwordData, [e.target.name]: e.target.value})
                             }}
                             InputProps={{
-                                endAdornment:(
+                                endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton onClick={handleShowPassword}>
                                             {showPassword ? <VisibilityOff/> : <Visibility/>}
@@ -93,10 +94,10 @@ const CustomDialog = ({
                             size="small"
                             margin="dense"
                             onChange={(e) => {
-                                setPasswordData({...passwordData,[e.target.name]:e.target.value})
+                                setPasswordData({...passwordData, [e.target.name]: e.target.value})
                             }}
                             InputProps={{
-                                endAdornment:(
+                                endAdornment: (
                                     <InputAdornment position="end">
                                         <IconButton onClick={handleShowPassword}>
                                             {showPassword ? <VisibilityOff/> : <Visibility/>}

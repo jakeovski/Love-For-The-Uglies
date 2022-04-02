@@ -16,6 +16,7 @@ const authMiddleware = async (req, res, next) => {
             const data = jwt.verify(token, publicKey);
             req.id = data.context.user?.id;
             req.key = data.context.user?.key;
+            req.role = data.context.user?.role;
         } else {
             return res.status(401).json({
                 data: undefined,
@@ -33,7 +34,7 @@ const authMiddleware = async (req, res, next) => {
                 type: 'error',
                 message: 'Token has Expired'
             })
-        }else {
+        } else {
             return res.status(401).json({
                 data: error.name,
                 type: 'error',

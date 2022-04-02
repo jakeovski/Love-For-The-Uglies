@@ -1,15 +1,15 @@
 import React from 'react';
 import {Container, Grid, Tooltip, Typography} from "@mui/material";
 import packageJson from '../../../package.json';
-import { styled } from '@mui/material/styles';
+import {styled} from '@mui/material/styles';
 
 /**
  * Custom styled component
  * @type {StyledComponent<PropsOf<OverridableComponent<TypographyTypeMap>> & MUIStyledCommonProps<Theme>, {}, {}>}
  */
 const FooterText = styled(Typography)`
-    color:#fff;
-    font-size:1rem
+  color: #fff;
+  font-size: 1rem
 `;
 
 /**
@@ -18,12 +18,12 @@ const FooterText = styled(Typography)`
  * @constructor
  */
 const Footer = () => {
-    return(
+    return (
         <Container maxWidth={false} sx={{
-            minHeight:'10vh',
-            textAlign:'center',
+            minHeight: '10vh',
+            textAlign: 'center',
             width: '100%',
-            padding:'0.5em',
+            padding: '0.5em',
         }}>
             <Tooltip title={`ver ${packageJson.version}`} arrow>
                 <Grid container>

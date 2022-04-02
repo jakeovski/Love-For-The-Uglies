@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {
     Alert,
-    Avatar, Box, Button, Chip, CircularProgress,
+    Avatar,
+    Button,
+    CircularProgress,
     Divider,
     Grid,
     IconButton,
@@ -11,16 +13,11 @@ import {
     Typography,
     useTheme
 } from "@mui/material";
-import {MAX_COMMENT_LENGTH} from "../../../Constants/general";
+import {MAX_COMMENT_LENGTH} from "../../../../Constants/general";
 import ClearIcon from '@mui/icons-material/Clear';
-import SendIcon from '@mui/icons-material/Send';
-import FileBase from "react-file-base64";
+import SendIcon from '@mui/icons-material/Telegram';
 import Dropzone from "react-dropzone";
 import {styled} from "@mui/material/styles";
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
-import OutletIcon from '@mui/icons-material/Outlet';
 import {useDispatch, useSelector} from "react-redux";
 import {
     addComment,
@@ -30,56 +27,55 @@ import {
     deleteSubReply,
     getAllComments,
     likeComment
-} from "../../../actions/comments";
+} from "../../../../actions/comments";
 import {useNavigate} from "react-router-dom";
-import Comment from "../../Helper/Comment";
+import Comment from "./Comment";
 
 
-export const DropzoneContainer = styled('div')(({ theme }) => ({
-    alignItems:'center',
-    padding:'5px',
-    border:'1px dotted',
-    borderRadius:4,
+export const DropzoneContainer = styled('div')(({theme}) => ({
+    alignItems: 'center',
+    padding: '5px',
+    border: '1px dotted',
+    borderRadius: 4,
     borderColor: theme.palette.primary.light,
-    backgroundColor:'#fafafa',
-    color:'#bdbdbd',
-    outline:'none',
+    backgroundColor: '#fafafa',
+    color: '#bdbdbd',
+    outline: 'none',
     transition: 'border .24s ease-in-out',
-    '&:hover':{
-        border:'2px solid',
+    '&:hover': {
+        border: '2px solid',
         borderColor: theme.palette.primary.light
     }
 }));
 
-const Comments = ({user,setAlertMessage}) => {
+const Comments = ({user, setAlertMessage}) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const comments = useSelector((state) => state.comments);
-    const [newComment,setNewComment] = useState({
-        id:'',
-        comment:'',
-        image:''
+    const [newComment, setNewComment] = useState({
+        id: '',
+        comment: '',
+        image: ''
     });
-    const [imageAlertMessage,setImageAlertMessage] = useState({
-        type:'',
-        message:''
+    const [imageAlertMessage, setImageAlertMessage] = useState({
+        type: '',
+        message: ''
     });
 
-    const [commentAlertMessage,setCommentAlertMessage] = useState({
-        type:'',
-        message:''
+    const [commentAlertMessage, setCommentAlertMessage] = useState({
+        type: '',
+        message: ''
     })
 
-    const [chatAlertMessage,setChatAlertMessage] = useState({
-        type:'',
-        message:''
+    const [chatAlertMessage, setChatAlertMessage] = useState({
+        type: '',
+        message: ''
     })
 
-    const [commentsLoading,setCommentsLoading] = useState(false);
+    const [commentsLoading, setCommentsLoading] = useState(false);
 
     const handleImageUpload = (base64) => {
-        console.log(base64);
         if (!base64[0].type.includes('image')) {
             setImageAlertMessage({
                 type: 'error',
@@ -105,7 +101,7 @@ const Comments = ({user,setAlertMessage}) => {
             }
             reader.onerror = (error) => {
                 setImageAlertMessage({
-                    type:'error',
+                    type: 'error',
                     message: error
                 })
             }
@@ -114,66 +110,65 @@ const Comments = ({user,setAlertMessage}) => {
 
     const handleClearButton = () => {
         setNewComment({
-            id:'',
-            comment:'',
-            image:''
+            id: '',
+            comment: '',
+            image: ''
         });
     }
 
-    const handleNewCommentSubmit = () =>{
-        dispatch(addComment(newComment,setCommentAlertMessage,setAlertMessage,navigate));
+    const handleNewCommentSubmit = () => {
+        dispatch(addComment(newComment, setCommentAlertMessage, setAlertMessage, navigate));
         handleClearButton();
     }
 
     useEffect(() => {
-        if(!comments.length > 0) {
-            console.log(comments);
+        if (!comments.length > 0) {
             setCommentsLoading(true);
-            dispatch(getAllComments(setAlertMessage,setChatAlertMessage,navigate,setCommentsLoading));
+            dispatch(getAllComments(setAlertMessage, setChatAlertMessage, navigate, setCommentsLoading));
         }
-    },[]);
+    }, []);
 
-    const handleReplySubmit = (parentComponent,comment) => {
-        dispatch(addReply(setAlertMessage,navigate,setCommentsLoading,setChatAlertMessage,
-            parentComponent,comment));
+    const handleReplySubmit = (parentComponent, comment) => {
+        dispatch(addReply(setAlertMessage, navigate, setCommentsLoading, setChatAlertMessage,
+            parentComponent, comment));
     }
 
-    const handleSubReplySubmit = (commentId,subReplyPosition,comment,replyTo) => {
-        dispatch(addSubReply(setAlertMessage,navigate,setCommentsLoading,setChatAlertMessage,
-        commentId,subReplyPosition,comment,replyTo));
+    const handleSubReplySubmit = (commentId, subReplyPosition, comment, replyTo) => {
+        dispatch(addSubReply(setAlertMessage, navigate, setCommentsLoading, setChatAlertMessage,
+            commentId, subReplyPosition, comment, replyTo));
     }
 
-    const handleLikeSubmit = (likeType,commentId,remove) => {
-        dispatch(likeComment(setAlertMessage,navigate,setChatAlertMessage,likeType,commentId,remove));
+    const handleLikeSubmit = (likeType, commentId, remove) => {
+        dispatch(likeComment(setAlertMessage, navigate, setChatAlertMessage, likeType, commentId, remove));
     }
 
-    const handleImageRemove = () =>{
+    const handleImageRemove = () => {
         setNewComment({
-            ...newComment,image:''
+            ...newComment, image: ''
         })
     }
 
     const handleCommentDeleteSubmit = (commentId) => {
-        dispatch(deleteComment(setAlertMessage,navigate,setChatAlertMessage,commentId,false));
+        dispatch(deleteComment(setAlertMessage, navigate, setChatAlertMessage, commentId, false));
     }
 
-    const handleReplyDelete = (replyId,parent) => {
-        dispatch(deleteComment(setAlertMessage,navigate,setChatAlertMessage,replyId,true,parent));
+    const handleReplyDelete = (replyId, parent) => {
+        dispatch(deleteComment(setAlertMessage, navigate, setChatAlertMessage, replyId, true, parent));
     }
 
-    const handleSubReplyDeleteSubmit = (subReplyId,replyId,parentId) => {
-        dispatch(deleteSubReply(setAlertMessage,navigate,setChatAlertMessage,subReplyId,replyId,parentId));
+    const handleSubReplyDeleteSubmit = (subReplyId, replyId, parentId) => {
+        dispatch(deleteSubReply(setAlertMessage, navigate, setChatAlertMessage, subReplyId, replyId, parentId));
     }
 
-    return(
+    return (
         <Paper elevation={3} sx={{
-            mt:1,
-            mb:1,
-            borderRadius:4
+            mt: 1,
+            mb: 1,
+            borderRadius: 4
         }}>
             <Grid container padding={2} mb={2}>
                 <Grid item xs={12}>
-                    <Typography variant="h5" sx={{opacity:0.7}}>Create Discussion</Typography>
+                    <Typography variant="h5" sx={{opacity: 0.7}}>Create Discussion</Typography>
                 </Grid>
                 {
                     newComment.id &&
@@ -189,7 +184,7 @@ const Comments = ({user,setAlertMessage}) => {
                             {user.username.charAt(0)}
                         </Avatar>
                     </Grid>
-                    <Grid item container xs={7} alignContent="flex-start">
+                    <Grid item container xs={12} lg={7} alignContent="flex-start">
                         <Grid item xs={12}>
                             <TextField
                                 fullWidth
@@ -197,7 +192,7 @@ const Comments = ({user,setAlertMessage}) => {
                                 value={newComment.comment}
                                 onChange={(e) => {
                                     setNewComment({
-                                        ...newComment,comment: e.target.value
+                                        ...newComment, comment: e.target.value
                                     })
                                 }}
                                 placeholder="Start typing"
@@ -206,14 +201,15 @@ const Comments = ({user,setAlertMessage}) => {
                                     maxLength: MAX_COMMENT_LENGTH
                                 }}
                                 InputProps={{
-                                    endAdornment:<InputAdornment position="end">{`${newComment.comment.length}/${MAX_COMMENT_LENGTH}`}</InputAdornment>
+                                    endAdornment: <InputAdornment
+                                        position="end">{`${newComment.comment.length}/${MAX_COMMENT_LENGTH}`}</InputAdornment>
                                 }}
                             />
                         </Grid>
                         <Grid item container xs={12} alignItems="center" justifyContent="space-between" mt={1}>
                             <Grid item xs={7}>
                                 <Dropzone onDrop={handleImageUpload}>
-                                    {({getRootProps,getInputProps}) => (
+                                    {({getRootProps, getInputProps}) => (
                                         <section>
                                             <DropzoneContainer theme={theme} {...getRootProps()}>
                                                 <input {...getInputProps()}/>
@@ -226,37 +222,38 @@ const Comments = ({user,setAlertMessage}) => {
                             <Grid item container xs="auto" spacing={2}>
                                 {(newComment.comment || newComment.image) &&
                                     <>
-                                    <Grid item xs="auto">
-                                        <IconButton onClick={handleClearButton}>
-                                            <ClearIcon/>
-                                        </IconButton>
-                                    </Grid>
-                                    <Grid item xs="auto">
-                                    <IconButton sx={{
-                                    color:'white',
-                                    backgroundColor:theme.palette.primary.light,
-                                    '&:hover':{
-                                    color:'black'
-                                }
-                                    }} onClick={handleNewCommentSubmit}>
-                                    <SendIcon/>
-                                    </IconButton>
-                                    </Grid>
+                                        <Grid item xs="auto">
+                                            <IconButton onClick={handleClearButton}>
+                                                <ClearIcon/>
+                                            </IconButton>
+                                        </Grid>
+                                        <Grid item xs="auto">
+                                            <IconButton sx={{
+                                                color: 'white',
+                                                backgroundColor: theme.palette.primary.light,
+                                                '&:hover': {
+                                                    color: 'black'
+                                                }
+                                            }} onClick={handleNewCommentSubmit}>
+                                                <SendIcon/>
+                                            </IconButton>
+                                        </Grid>
                                     </>
                                 }
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item container xs={4}>
+                    <Grid item container xs={12} lg={4}>
                         {
                             newComment.image &&
                             <>
-                            <Grid item xs="auto">
-                                <img style={{border:`4px solid ${theme.palette.primary.dark}`,borderRadius:10}} src={newComment.image} alt="commentImage" width="100%" height={200}/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Button size="small" onClick={handleImageRemove}>Remove image</Button>
-                            </Grid>
+                                <Grid item xs="auto">
+                                    <img style={{border: `4px solid ${theme.palette.primary.dark}`, borderRadius: 10}}
+                                         src={newComment.image} alt="commentImage" width="100%" height={200}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button size="small" onClick={handleImageRemove}>Remove image</Button>
+                                </Grid>
                             </>
                         }
                         {
@@ -279,24 +276,23 @@ const Comments = ({user,setAlertMessage}) => {
                         <CircularProgress/>
                     </Grid>
                     :
-                comments.length > 0 ?
-                    comments.map((comment) => (
-                        <Comment comment={comment} key={comment.comment._id}
-                            handleReplySubmit={handleReplySubmit}
-                                 handleSubReplySubmit={handleSubReplySubmit}
-                                 handleLikeSubmit={handleLikeSubmit}
-                                 role={user.role}
-                                 userId={user.id}
-                                 setNewComment={setNewComment}
-                                 handleCommentDeleteSubmit={handleCommentDeleteSubmit}
-                                 handleReplyDelete={handleReplyDelete}
-                                 handleSubReplyDeleteSubmit={handleSubReplyDeleteSubmit}
-                        />
-                    ))
-                    :
-                    <Alert severity={chatAlertMessage.type ? chatAlertMessage.type : 'info'}>
-                        {chatAlertMessage.message ? chatAlertMessage.message : 'No chat messages'}
-                    </Alert>
+                    comments.length > 0 ?
+                        comments.map((comment) => (
+                            <Comment comment={comment} key={comment.comment._id}
+                                     handleReplySubmit={handleReplySubmit}
+                                     handleSubReplySubmit={handleSubReplySubmit}
+                                     handleLikeSubmit={handleLikeSubmit}
+                                     user={user}
+                                     setNewComment={setNewComment}
+                                     handleCommentDeleteSubmit={handleCommentDeleteSubmit}
+                                     handleReplyDelete={handleReplyDelete}
+                                     handleSubReplyDeleteSubmit={handleSubReplyDeleteSubmit}
+                            />
+                        ))
+                        :
+                        <Alert severity={chatAlertMessage.type ? chatAlertMessage.type : 'info'}>
+                            {chatAlertMessage.message ? chatAlertMessage.message : 'No chat messages'}
+                        </Alert>
             }
         </Paper>
     )

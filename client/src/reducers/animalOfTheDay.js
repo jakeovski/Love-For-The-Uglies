@@ -2,7 +2,7 @@ import {GET_ANIMAL} from "../Constants/actions";
 
 
 const animalOfTheDayReducer = (animal = {}, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case GET_ANIMAL:
             return action.data.data;
         default:

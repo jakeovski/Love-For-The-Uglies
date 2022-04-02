@@ -1,10 +1,8 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation, useNavigate,Outlet} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import decode from 'jwt-decode';
+import React, {useEffect} from 'react';
+import {Outlet, useLocation, useNavigate} from "react-router-dom";
+import {useDispatch} from "react-redux";
 import {CircularProgress} from "@mui/material";
 import Header from "../Header/Header";
-import Profile from "./Profile/Profile";
 import {getUserData} from '../../actions/auth';
 import Navbar from "./Navbar";
 
@@ -13,7 +11,7 @@ import Navbar from "./Navbar";
  * @returns {JSX.Element}
  * @constructor
  */
-const Home = ({pageLoading,setPageLoading,user,setUser,setAlertMessage}) => {
+const Home = ({pageLoading, setPageLoading, user, setUser, setAlertMessage}) => {
 
     /**
      * Navigation Hook
@@ -30,39 +28,39 @@ const Home = ({pageLoading,setPageLoading,user,setUser,setAlertMessage}) => {
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        try{
-            if(token) {
-                dispatch(getUserData(setAlertMessage,navigate,setUser,setPageLoading));
-                if(location.pathname === '/home') navigate('/home/hub');
-            }else {
+        try {
+            if (token) {
+                dispatch(getUserData(setAlertMessage, navigate, setUser, setPageLoading));
+                if (location.pathname === '/home') navigate('/home/hub');
+            } else {
                 navigate('/');
             }
-        }catch (error) {
+        } catch (error) {
             console.log(error);
             navigate('/');
         }
-    },[]);
+    }, []);
 
     useEffect(() => {
-        if(location.pathname === '/home') navigate('/home/hub');
-    },[location]);
+        if (location.pathname === '/home') navigate('/home/hub');
+    }, [location]);
 
-    return(
+    return (
         <>
             {
                 pageLoading ? <CircularProgress sx={{
-                        display:'block',
-                        marginLeft:'auto',
-                        marginRight:'auto',
-                        marginTop:'50vh'
+                        display: 'block',
+                        marginLeft: 'auto',
+                        marginRight: 'auto',
+                        marginTop: '50vh'
                     }}/>
-                    :<>
+                    : <>
                         <Header user={user} setAlertMessage={setAlertMessage}/>
                         {
                             location.pathname !== '/home/profile' &&
                             <Navbar/>
                         }
-                    <Outlet/>
+                        <Outlet/>
                     </>
 
             }

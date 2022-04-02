@@ -1,53 +1,61 @@
 import React, {useState} from 'react';
 import {Avatar, Grid, IconButton, InputAdornment, TextField, Typography, useTheme} from "@mui/material";
 import ReplyIcon from "@mui/icons-material/Reply";
-import {MAX_COMMENT_LENGTH} from "../../Constants/general";
-import SendIcon from "@mui/icons-material/Send";
+import {MAX_COMMENT_LENGTH} from "../../../../Constants/general";
+import SendIcon from '@mui/icons-material/Telegram';
 import SubReply from "./SubReply";
 import {Delete, Edit} from "@mui/icons-material";
 
-const Reply = ({reply,handleSubReplySubmit,userId,role,setNewReply,newReply,handleReplyDelete,handleSubReplyDeleteSubmit}) => {
+const Reply = ({
+                   reply,
+                   handleSubReplySubmit,
+    user,
+                   setNewReply,
+                   newReply,
+                   handleReplyDelete,
+                   handleSubReplyDeleteSubmit
+               }) => {
     const theme = useTheme();
 
-    const [newSubReply,setNewSubReply] = useState({
-        id:'',
-        message:''
+    const [newSubReply, setNewSubReply] = useState({
+        id: '',
+        message: ''
     });
-    const [toggleReply,setToggleReply] = useState(false);
+    const [toggleReply, setToggleReply] = useState(false);
 
-    const handleToggleReply = () =>{
+    const handleToggleReply = () => {
         setToggleReply((prev) => !prev);
     }
 
     const subReplySubmit = () => {
-        if (newSubReply.message){
-            handleSubReplySubmit(reply.reply._id,reply.reply.subReplies.length,newSubReply,reply.user.username);
+        if (newSubReply.message) {
+            handleSubReplySubmit(reply.reply._id, reply.reply.subReplies.length, newSubReply, reply.user.username);
             setNewSubReply({
-                id:'',
+                id: '',
                 message: ''
             });
             handleToggleReply();
         }
     }
     const handleReplyEdit = () => {
-        if (newReply.id){
+        if (newReply.id) {
             setNewReply({
-                id:'',
-                message:''
+                id: '',
+                message: ''
             })
-        }else {
+        } else {
             setNewReply({
-                id:reply.reply._id,
-                message:reply.reply.comment
+                id: reply.reply._id,
+                message: reply.reply.comment
             })
         }
     }
 
     const handleSubReplyDelete = (subReplyId) => {
-        handleSubReplyDeleteSubmit(subReplyId,reply.reply._id,reply.reply.parent);
+        handleSubReplyDeleteSubmit(subReplyId, reply.reply._id, reply.reply.parent);
     }
 
-    return(
+    return (
         <Grid item container xs={12} spacing={1}>
             <Grid item xs="auto">
                 <Avatar alt={reply.user.username} src={reply.user.avatar} sx={{
@@ -62,10 +70,10 @@ const Reply = ({reply,handleSubReplySubmit,userId,role,setNewReply,newReply,hand
                 </Grid>
                 <Grid item xs="auto">
                     <Typography sx={{
-                        color:'white',
-                        borderRadius:2,
-                        backgroundColor:theme.palette.primary.light,
-                        padding:0.8
+                        color: 'white',
+                        borderRadius: 2,
+                        backgroundColor: theme.palette.primary.light,
+                        padding: 0.8
                     }}>{reply.reply.comment}</Typography>
                 </Grid>
                 <Grid item xs="auto">
@@ -74,7 +82,7 @@ const Reply = ({reply,handleSubReplySubmit,userId,role,setNewReply,newReply,hand
                     </IconButton>
                 </Grid>
                 {
-                    (role === 'admin' || userId === reply.user._id) &&
+                    (user.role === 'admin' || user.id === reply.user._id) &&
                     <>
                         <Grid item xs="auto">
                             <IconButton size="small" onClick={handleReplyEdit}>
@@ -82,7 +90,8 @@ const Reply = ({reply,handleSubReplySubmit,userId,role,setNewReply,newReply,hand
                             </IconButton>
                         </Grid>
                         <Grid item xs="auto">
-                            <IconButton size="small" onClick={() => handleReplyDelete(reply.reply._id,reply.reply.parent)}>
+                            <IconButton size="small"
+                                        onClick={() => handleReplyDelete(reply.reply._id, reply.reply.parent)}>
                                 <Delete/>
                             </IconButton>
                         </Grid>
@@ -93,10 +102,10 @@ const Reply = ({reply,handleSubReplySubmit,userId,role,setNewReply,newReply,hand
                 toggleReply &&
                 <Grid item container xs={12} spacing={1}>
                     <Grid item xs="auto" ml={2}>
-                        <Avatar alt={reply.user.username} src={reply.user.avatar} sx={{
+                        <Avatar alt={reply.user.username} src={user.avatar} sx={{
                             backgroundColor: theme.palette.primary.main,
-                            height:24,
-                            width:24
+                            height: 24,
+                            width: 24
                         }}>
                             {reply.user.username.charAt(0)}
                         </Avatar>
@@ -110,14 +119,15 @@ const Reply = ({reply,handleSubReplySubmit,userId,role,setNewReply,newReply,hand
                             placeholder="Reply"
                             onChange={(e) => {
                                 setNewSubReply({
-                                    ...newSubReply,message:e.target.value
+                                    ...newSubReply, message: e.target.value
                                 });
                             }}
                             InputProps={{
-                                sx:{
-                                    backgroundColor:'white'
+                                sx: {
+                                    backgroundColor: 'white'
                                 },
-                                endAdornment:<InputAdornment position="end">{`${newSubReply.message.length}/${MAX_COMMENT_LENGTH}`}</InputAdornment>
+                                endAdornment: <InputAdornment
+                                    position="end">{`${newSubReply.message.length}/${MAX_COMMENT_LENGTH}`}</InputAdornment>
                             }}
                             inputProps={{
                                 maxLength: MAX_COMMENT_LENGTH
@@ -133,10 +143,10 @@ const Reply = ({reply,handleSubReplySubmit,userId,role,setNewReply,newReply,hand
             }
             {
                 reply.reply.subReplies.length > 0 &&
-                reply.reply.subReplies.map((subReply,index) => (
+                reply.reply.subReplies.map((subReply, index) => (
                     <SubReply key={subReply._id} subReply={subReply} index={index} reply={reply}
-                        handleSubReplySubmit={handleSubReplySubmit}
-                              role={role} userId={userId}
+                              handleSubReplySubmit={handleSubReplySubmit}
+                              role={user.role} userId={user.id}
                               handleSubReplyDelete={handleSubReplyDelete}
                     />
                 ))

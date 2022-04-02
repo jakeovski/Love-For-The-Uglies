@@ -23,7 +23,7 @@ import {useNavigate} from "react-router-dom";
  * @returns {JSX.Element}
  * @constructor
  */
-const Login = ({alertMessage,setAlertMessage}) => {
+const Login = ({alertMessage, setAlertMessage}) => {
     /**
      * Dispatch Hook
      * @type {Dispatch<any>}
@@ -97,11 +97,11 @@ const Login = ({alertMessage,setAlertMessage}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
-        if(isRegister){
+        if (isRegister) {
             dispatch(register(inputData));
-        }else {
+        } else {
             resetAlertMessage();
-            dispatch(login(inputData,navigate));
+            dispatch(login(inputData, navigate));
         }
     }
 
@@ -110,7 +110,7 @@ const Login = ({alertMessage,setAlertMessage}) => {
      */
     const resetAlertMessage = () => {
         setAlertMessage({
-            type:'',
+            type: '',
             message: ''
         });
     }
@@ -123,20 +123,20 @@ const Login = ({alertMessage,setAlertMessage}) => {
         if (token) {
             navigate('/home');
         }
-    },[]);
+    }, []);
 
     useEffect(() => {
         if (userResponse.message) {
             setLoading(false);
             setAlertMessage({
-                type:userResponse.type,
-                message:userResponse.message
+                type: userResponse.type,
+                message: userResponse.message
             });
             if (userResponse.type === 'success') {
                 setIsRegister(false);
             }
         }
-    },[userResponse]);
+    }, [userResponse]);
 
     return (
         <>

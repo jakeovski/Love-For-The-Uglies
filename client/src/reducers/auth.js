@@ -6,12 +6,12 @@ import {AUTH_ERROR, LOGIN, REGISTER} from "../Constants/actions";
  * @param action
  * @returns {{}|*}
  */
-const authReducer = (auth={},action) => {
+const authReducer = (auth = {}, action) => {
     switch (action.type) {
         case REGISTER:
             return action.data;
         case LOGIN:
-            localStorage.setItem('token',JSON.stringify(action.data.data.token))
+            localStorage.setItem('token', JSON.stringify(action.data.data.token))
             return action.data;
         case AUTH_ERROR:
             return action.payload;

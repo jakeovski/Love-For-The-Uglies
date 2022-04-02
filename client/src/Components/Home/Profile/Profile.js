@@ -12,7 +12,6 @@ import {
     useTheme
 } from "@mui/material";
 import defaultProfile from '../../../images/profile.svg';
-import FileBase from "react-file-base64";
 import ReactRoundedImage from 'react-rounded-image';
 import {ArrowBack, Delete, Edit} from "@mui/icons-material";
 import {DateTime} from "luxon";
@@ -21,7 +20,7 @@ import {changePassword, deleteAccount, editProfile} from "../../../actions/profi
 import {useNavigate} from "react-router-dom";
 import CustomDialog from "../../Helper/Dialog";
 import Dropzone from "react-dropzone";
-import {DropzoneContainer} from "../Hub/Comments";
+import {DropzoneContainer} from "../Hub/Components/Comments";
 
 
 const Profile = ({user, setUser, setAlertMessage}) => {
@@ -41,24 +40,24 @@ const Profile = ({user, setUser, setAlertMessage}) => {
         message: ''
     })
 
-    const [dialogAlertMessage,setDialogAlertMessage] = useState({
-        type:'',
-        message:''
+    const [dialogAlertMessage, setDialogAlertMessage] = useState({
+        type: '',
+        message: ''
     })
 
     const [userForm, setUserForm] = useState(user);
     const [toggleEdit, setToogleEdit] = useState(false);
     const [bottomLoading, setBottomLoading] = useState(false);
-    const [passwordData,setPasswordData] = useState({
-        oldPassword:'',
-        newPassword:'',
-        newPasswordConfirm:''
+    const [passwordData, setPasswordData] = useState({
+        oldPassword: '',
+        newPassword: '',
+        newPasswordConfirm: ''
     });
-    const [passwordDialogOpen,setPasswordDialogOpen] = useState(false);
-    const [showPassword,setShowPassword] = useState(false);
-    const [dialogButtonLoading,setDialogButtonLoading] = useState(false);
+    const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [dialogButtonLoading, setDialogButtonLoading] = useState(false);
 
-    const [deleteDialogOpen,setDeleteDialogOpen] = useState(false);
+    const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
     const handleImageUpload = (base64) => {
         console.log(base64);
@@ -87,7 +86,7 @@ const Profile = ({user, setUser, setAlertMessage}) => {
             }
             reader.onerror = (error) => {
                 setImageAlertMessage({
-                    type:'error',
+                    type: 'error',
                     message: error
                 })
             }
@@ -132,8 +131,8 @@ const Profile = ({user, setUser, setAlertMessage}) => {
     }
 
     const handlePasswordDialogOpen = () => {
-        setDialogAlertMessage({type:'',message: ''});
-        setPasswordData({ oldPassword:'',newPassword:'',newPasswordConfirm:''})
+        setDialogAlertMessage({type: '', message: ''});
+        setPasswordData({oldPassword: '', newPassword: '', newPasswordConfirm: ''})
         setPasswordDialogOpen((prev) => !prev);
     }
 
@@ -145,19 +144,19 @@ const Profile = ({user, setUser, setAlertMessage}) => {
         setDialogButtonLoading(true);
         dispatch(changePassword(passwordData,
             setDialogButtonLoading,
-            setAlertMessage,navigate,
-            setDialogAlertMessage,setPasswordDialogOpen));
+            setAlertMessage, navigate,
+            setDialogAlertMessage, setPasswordDialogOpen));
     }
 
     const handleDeleteDialogOpen = () => {
-        setDialogAlertMessage({type:'',message: ''});
+        setDialogAlertMessage({type: '', message: ''});
         setDeleteDialogOpen((prev) => !prev);
     }
 
     const handleDeleteDialogSubmit = () => {
         setDialogButtonLoading(true);
         dispatch(deleteAccount(setDialogButtonLoading,
-            setAlertMessage,navigate,setDialogAlertMessage,setDeleteDialogOpen))
+            setAlertMessage, navigate, setDialogAlertMessage, setDeleteDialogOpen))
     }
 
     const handleProfileClose = () => {
@@ -181,7 +180,7 @@ const Profile = ({user, setUser, setAlertMessage}) => {
                     <Grid item xs={12} textAlign="center" sx={{mb: 2}}>
                         <Typography>{userForm.role}</Typography>
                     </Grid>
-                    <Grid item container xs={6}>
+                    <Grid item container xs={12} sm={6}>
                         <Grid item xs={12} display="flex" justifyContent="center">
                             <ReactRoundedImage
                                 image={userForm.avatar ? userForm.avatar : defaultProfile}
@@ -198,7 +197,9 @@ const Profile = ({user, setUser, setAlertMessage}) => {
                             </Grid>
                         }
                     </Grid>
-                    <Grid item container xs={6} alignContent="space-around" spacing={2}>
+                    <Grid item container xs={12} sm={6} alignContent="space-around" spacing={2} sx={{
+                        textAlign: {xs: 'center', sm: 'start'}
+                    }}>
                         <Grid item xs={12}>
                             {toggleEdit ?
                                 <TextField name="username"
@@ -231,12 +232,15 @@ const Profile = ({user, setUser, setAlertMessage}) => {
                                 <Typography><b>Last Name:</b> {userForm.lastName}</Typography>
                             }
                         </Grid>
-                        <Grid item container xs={12} spacing={1} alignItems="center">
+                        <Grid item container xs={12} spacing={1} alignItems="center" sx={{
+                            justifyContent: {xs: 'center', sm: 'flex-start'}
+                        }}>
                             <Grid item xs="auto">
                                 <Typography fontWeight="bold">Password:</Typography>
                             </Grid>
                             <Grid item xs="auto">
-                                <Button variant="contained" size="small" onClick={handlePasswordDialogOpen}>Change Password</Button>
+                                <Button variant="contained" size="small" onClick={handlePasswordDialogOpen}>Change
+                                    Password</Button>
                             </Grid>
                         </Grid>
                         {toggleEdit &&
@@ -246,7 +250,7 @@ const Profile = ({user, setUser, setAlertMessage}) => {
                                 </Grid>
                                 <Grid item xs="auto">
                                     <Dropzone onDrop={handleImageUpload}>
-                                        {({getRootProps,getInputProps}) => (
+                                        {({getRootProps, getInputProps}) => (
                                             <section>
                                                 <DropzoneContainer theme={theme} {...getRootProps()}>
                                                     <input {...getInputProps()}/>
@@ -284,7 +288,8 @@ const Profile = ({user, setUser, setAlertMessage}) => {
                                         </IconButton>
                                     </Grid>
                                     <Grid item xs="auto">
-                                        <IconButton sx={{color: theme.palette.primary.main}} onClick={handleDeleteDialogOpen}>
+                                        <IconButton sx={{color: theme.palette.primary.main}}
+                                                    onClick={handleDeleteDialogOpen}>
                                             <Delete/>
                                         </IconButton>
                                     </Grid>

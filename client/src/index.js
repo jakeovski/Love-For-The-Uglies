@@ -10,7 +10,7 @@ import {Provider} from "react-redux";
  * Stores the state of the data across the application
  * @type {Store<EmptyObject & S, AnyAction> & Store<S, A> & {dispatch: ThunkDispatch<any, undefined, AnyAction>}}
  */
-const store = createStore(reducers,compose(applyMiddleware(thunk)));
+const store = createStore(reducers, compose(applyMiddleware(thunk)));
 
 ReactDOM.render(
     <Provider store={store}>

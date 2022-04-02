@@ -5,38 +5,38 @@ import mongoose from "mongoose";
  * @type {*}
  */
 const User = mongoose.Schema({
-    id:{
-        type:String,
+    id: {
+        type: String,
     },
-    username:{
-        type:String,
-        required:true
-    },
-    usernameUpper:{
-        type:String,
-        required:true
-    },
-    password:{
-        type:String,
+    username: {
+        type: String,
         required: true
     },
-    firstName:{
-        type:String,
+    usernameUpper: {
+        type: String,
+        required: true
     },
-    lastName:{
-        type:String
+    password: {
+        type: String,
+        required: true
     },
-    role:{
-        type:String,
-        default:'user'
+    firstName: {
+        type: String,
     },
-    avatar:{
-        type:String,
+    lastName: {
+        type: String
     },
-    created:{
-        type:Date,
-        required:true
+    role: {
+        type: String,
+        default: 'user'
+    },
+    avatar: {
+        type: String,
+    },
+    created: {
+        type: Date,
+        required: true
     }
 })
 
-export default mongoose.models.users || mongoose.model("users",User);
+export default mongoose.models.users || mongoose.model("users", User);

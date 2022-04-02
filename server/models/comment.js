@@ -1,69 +1,69 @@
 import mongoose from "mongoose";
 
 const comment = mongoose.Schema({
-    id:{
-        type:String
+    id: {
+        type: String
     },
-    userId:{
-        type:String,
-        required:true
+    userId: {
+        type: String,
+        required: true
     },
-    parent:{
-      type:String,
-        default:''
+    parent: {
+        type: String,
+        default: ''
     },
-    comment:{
-        type:String,
+    comment: {
+        type: String,
     },
     subReplies: {
-        type:[
+        type: [
             {
-                id:{
-                    type:String
+                id: {
+                    type: String
                 },
-                userId:{
-                    type:String,
+                userId: {
+                    type: String,
                 },
-                username:{
-                    type:String,
+                username: {
+                    type: String,
                 },
-                comment:{
-                    type:String,
+                comment: {
+                    type: String,
                 },
-                replyTo:{
-                    type:String,
+                replyTo: {
+                    type: String,
                 }
             }
         ],
-        default:[]
+        default: []
     },
-    image:{
-        type:String,
+    image: {
+        type: String,
     },
-    thumbsUp:{
-        type:[],
-        default:[]
+    thumbsUp: {
+        type: [],
+        default: []
     },
-    thumbsDown:{
-        type:[],
-        default:[]
+    thumbsDown: {
+        type: [],
+        default: []
     },
-    fireLike:{
-        type:[],
-        default:[]
+    fireLike: {
+        type: [],
+        default: []
     },
-    surprisedLike:{
-        type:[],
-        default:[]
+    surprisedLike: {
+        type: [],
+        default: []
     },
-    createdAt:{
-        type:Date,
+    createdAt: {
+        type: Date,
     },
-    numberOfComments:{
-        type:Number,
-        default:0
+    numberOfComments: {
+        type: Number,
+        default: 0
     }
 })
 
 
-export default mongoose.models.comment || mongoose.model("comments",comment);
+export default mongoose.models.comment || mongoose.model("comments", comment);

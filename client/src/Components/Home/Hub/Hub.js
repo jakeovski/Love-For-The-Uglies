@@ -1,11 +1,11 @@
 import React from 'react';
-import AnimalOfTheDay from "./AnimalOfTheDay";
-import Comments from "./Comments";
+import AnimalOfTheDay from "./Components/AnimalOfTheDay";
+import Comments from "./Components/Comments";
 
 
-const Hub = ({user,setAlertMessage}) => {
+const Hub = ({user, setAlertMessage}) => {
 
-    return(
+    return (
         <>
             <AnimalOfTheDay/>
             <Comments user={user} setAlertMessage={setAlertMessage}/>
