@@ -23,6 +23,7 @@ const Header = ({user, setAlertMessage}) => {
     const logout = () => {
         localStorage.removeItem("token");
         navigate('/');
+        window.location.reload()
     }
 
     const openProfile = () => {

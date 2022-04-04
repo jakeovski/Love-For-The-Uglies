@@ -14,7 +14,7 @@ Both in the client and server folders of the project
 
 3. Create .env file with the following properties:
    CONNECTION_URL - containing the url to connect to Mongo Atlas database
-   SERVER_PORT - containing the port you would like the server to run on
+   PORT - containing the port you would like the server to run on
 
 4. For security reasons the private key required for the JWT token is not present in the repository. Generate a new pair of public.pem and private.pem RS256 keys and put them in the /server/config folder of the project
 
