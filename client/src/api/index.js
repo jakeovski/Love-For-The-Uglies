@@ -8,7 +8,8 @@ import axios from 'axios';
  * Create Axios Object with base URL
  * @type {AxiosInstance}
  */
-const API = axios.create({baseURL: 'http://localhost:3000/api'});
+//Change for local testing
+const API = axios.create({baseURL: 'https://love-for-the-uglies-cw.herokuapp.com/api'});
 
 /**
  * Populate the request header with the token if one is present
