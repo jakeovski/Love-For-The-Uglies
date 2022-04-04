@@ -149,7 +149,7 @@ const Reply = ({
                 reply.reply.subReplies.map((subReply, index) => (
                     <SubReply key={subReply._id} subReply={subReply} index={index} reply={reply}
                               handleSubReplySubmit={handleSubReplySubmit}
-                              role={user.role} userId={user.id}
+                              user={user}
                               handleSubReplyDelete={handleSubReplyDelete}
                     />
                 ))

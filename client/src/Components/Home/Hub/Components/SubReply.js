@@ -6,7 +6,7 @@ import SendIcon from '@mui/icons-material/Telegram';
 import {Delete, Edit} from "@mui/icons-material";
 
 
-const SubReply = ({subReply, index, reply, handleSubReplySubmit, role, userId, handleSubReplyDelete}) => {
+const SubReply = ({subReply, index, reply, handleSubReplySubmit, user, handleSubReplyDelete}) => {
 
     //Hooks
     const theme = useTheme();
@@ -71,7 +71,7 @@ const SubReply = ({subReply, index, reply, handleSubReplySubmit, role, userId, h
                     </IconButton>
                 </Grid>
                 {
-                    (role === 'admin' || userId === subReply.userId) &&
+                    (user.role === 'admin' || user.id === subReply.userId) &&
                     <>
                         <Grid item xs="auto">
                             <IconButton size="small" onClick={handleSubReplyEdit}>
@@ -89,12 +89,12 @@ const SubReply = ({subReply, index, reply, handleSubReplySubmit, role, userId, h
                     toggleReply &&
                     <Grid item container xs={12} spacing={1} mt={0.5}>
                         <Grid item xs="auto" ml={2}>
-                            <Avatar alt={reply.user.username} src={reply.user.avatar} sx={{
+                            <Avatar alt={user.username} src={user.avatar} sx={{
                                 backgroundColor: theme.palette.primary.main,
                                 height: 24,
                                 width: 24
                             }}>
-                                {reply.user.username.charAt(0)}
+                                {user.username.charAt(0)}
                             </Avatar>
                         </Grid>
                         <Grid item xs={7}>
