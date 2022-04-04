@@ -8,8 +8,10 @@ import {Delete, Edit} from "@mui/icons-material";
 
 
 const Event = ({event, setNewEvent, handleDeleteEvent, handleUpdateAttendance, role}) => {
+    //Hooks
     const theme = useTheme();
 
+    //Handlers
     const handleEditButtonClick = () => {
         setNewEvent({
             id: event.event._id,

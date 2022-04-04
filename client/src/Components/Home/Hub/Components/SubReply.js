@@ -8,13 +8,17 @@ import {Delete, Edit} from "@mui/icons-material";
 
 const SubReply = ({subReply, index, reply, handleSubReplySubmit, role, userId, handleSubReplyDelete}) => {
 
+    //Hooks
     const theme = useTheme();
+
+    //States
     const [toggleReply, setToggleReply] = useState(false);
     const [newSubReply, setNewSubReply] = useState({
         id: '',
         message: ''
     });
 
+    //Handlers
     const handleToggleReply = () => {
         setToggleReply((prev) => !prev);
     }

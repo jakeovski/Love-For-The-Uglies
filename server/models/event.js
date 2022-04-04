@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
-
+/**
+ * MongoDb model for events
+ * @type {*}
+ */
 const Event = mongoose.Schema({
     id: {
         type: String

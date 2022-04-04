@@ -3,7 +3,11 @@ import generateTokens from "../config/tokenHelper.js";
 import bcrypt from "bcrypt";
 import Token from "../models/token.js";
 
-
+/**
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const editProfile = async (req, res) => {
     const {oldUsername, newUserData} = req.body;
     try {
@@ -57,6 +61,11 @@ export const editProfile = async (req, res) => {
     }
 }
 
+/**
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const changePassword = async (req, res) => {
     const {oldPassword, newPassword, newPasswordConfirm} = req.body;
     try {
@@ -113,6 +122,12 @@ export const changePassword = async (req, res) => {
     }
 }
 
+/**
+ *
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const deleteAccount = async (req, res) => {
     try {
         //Delete the user profile and all the related data

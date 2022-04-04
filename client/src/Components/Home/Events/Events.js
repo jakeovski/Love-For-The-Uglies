@@ -9,9 +9,12 @@ import AllEvents from "./Components/AllEvents";
 import MyEvents from "./Components/MyEvents";
 
 const Events = ({setAlertMessage, user}) => {
+    //Hooks
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const allEvents = useSelector((state) => state.allEvents);
+
+    //States
     const [isAllEvents, setIsAllEvents] = useState(true);
     const [eventAlertMessage, setEventAlertMessage] = useState({
         type: '',
@@ -26,6 +29,7 @@ const Events = ({setAlertMessage, user}) => {
         image: ''
     });
 
+    //Handlers
     const handleToggleTabChange = (allEvents) => {
         if (allEvents) {
             setIsAllEvents(true);
@@ -50,6 +54,7 @@ const Events = ({setAlertMessage, user}) => {
         dispatch(updateAttendance(setAlertMessage, navigate, setEventAlertMessage, id));
     }
 
+    //Data fetch useEffect
     useEffect(() => {
         if (allEvents.length === 0) {
             setEventsLoading(true);

@@ -2,7 +2,12 @@ import fs from "fs";
 import jwt from "jsonwebtoken";
 import RefreshToken from "../models/token.js";
 
-
+/**
+ * Helper method that handles token generation and update
+ * @param tokenKey
+ * @param user
+ * @returns {Promise<{token: (*), refreshToken: (*)}>}
+ */
 const generateTokens = async (tokenKey, user) => {
     //Read the key and sign the token
     const key = fs.readFileSync('./config/private.pem');

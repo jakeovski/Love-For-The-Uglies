@@ -33,13 +33,16 @@ const Comment = ({
                      handleReplyDelete,
                      handleSubReplyDeleteSubmit
                  }) => {
+    //Hooks
     const theme = useTheme();
+
+    //States
     const [newReply, setNewReply] = useState({
         id: '',
         message: ''
     });
 
-
+    //Handlers
     const handleReplyCheck = () => {
         if (newReply.message.length > 0) {
             handleReplySubmit(comment.comment._id, newReply);

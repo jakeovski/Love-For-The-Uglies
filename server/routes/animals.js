@@ -1,7 +1,6 @@
 import express from "express";
 import {addAnimalToDb, getAnimals} from "../controllers/animals.js";
 
-
 const router = express.Router();
 
 router.get('/', getAnimals);

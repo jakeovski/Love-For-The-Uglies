@@ -3,10 +3,6 @@ import {Container, Grid, Tooltip, Typography} from "@mui/material";
 import packageJson from '../../../package.json';
 import {styled} from '@mui/material/styles';
 
-/**
- * Custom styled component
- * @type {StyledComponent<PropsOf<OverridableComponent<TypographyTypeMap>> & MUIStyledCommonProps<Theme>, {}, {}>}
- */
 const FooterText = styled(Typography)`
   color: #fff;
   font-size: 1rem

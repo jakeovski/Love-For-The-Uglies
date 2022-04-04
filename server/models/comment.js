@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+/**
+ * MongoDb model for comment
+ * @type {*}
+ */
 const comment = mongoose.Schema({
     id: {
         type: String

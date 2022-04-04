@@ -49,67 +49,39 @@ API.interceptors.response.use((response) => {
     }
 })
 
-/**
- * Function to call /auth/login endpoint
- * @param inputData
- * @returns {Promise<AxiosResponse<any>>}
- */
+//Endpoint calls
 export const login = (inputData) => API.post(`/auth/login`, inputData);
-
-/**
- * Function to call /auth/register endpoint
- * @param inputData - Data from the Authentication form
- * @returns {Promise<AxiosResponse<any>>}
- */
 export const register = (inputData) => API.post(`/auth/register`, inputData);
-
 export const getUserData = () => API.get(`/auth/user`);
-
 export const editProfile = (oldUsername, newUserData) => API.patch(`/profile/edit`, {
     oldUsername: oldUsername,
     newUserData: newUserData
 });
-
 export const changePassword = (passwordData) => API.patch(`/profile/changePassword`, passwordData);
-
 export const deleteAccount = () => API.delete(`/profile/delete`);
-
 export const getAnimals = () => API.get(`/animals`);
-
 export const addComment = (newComment) => API.post('/comment/add', newComment);
-
 export const getAllComments = () => API.get('/comment');
-
 export const addReply = (parentComment, comment) => API.post('/comment/addReply', {
     parentComment,
     comment
 });
-
 export const addSubReply = (commentId, subReplyPosition, comment, replyTo) => API.post('/comment/addSubReply', {
     commentId,
     subReplyPosition,
     comment,
     replyTo
 })
-
 export const likeComment = (likeType, commentId, remove) => API.patch('/comment/like', {
     likeType,
     commentId,
     remove
 })
-
 export const deleteComment = (commentId) => API.delete(`/comment/delete/${commentId}`);
-
 export const deleteReply = (replyId, parent) => API.delete(`/comment/deleteReply/${parent}/${replyId}`);
-
 export const deleteSubReply = (subReplyId, replyId, parentId) => API.delete(`/comment/deleteSubReply/${parentId}/${replyId}/${subReplyId}`);
-
 export const addEvent = (newEvent) => API.post('/events/add', newEvent);
-
 export const getAllEvents = () => API.get('/events');
-
 export const editEvent = (event) => API.patch('/events/edit', event);
-
 export const deleteEvent = (id) => API.delete(`/events/delete/${id}`);
-
 export const updateAttendance = (id) => API.patch(`/events/updateAttendance/${id}`);

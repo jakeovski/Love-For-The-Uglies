@@ -2,11 +2,15 @@ import Comment from "../models/comment.js";
 import User from "../models/user.js";
 import {DateTime} from "luxon";
 
-
+/**
+ * Add a new comment to the database
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const addComment = async (req, res) => {
     try {
         const {comment, image, id} = req.body;
-        console.log(id);
         let createdComment;
         let user;
         if (id) {
@@ -53,7 +57,12 @@ export const addComment = async (req, res) => {
     }
 }
 
-
+/**
+ * Get all comment data from the database
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const getAllComments = async (req, res) => {
     try {
         const comments = await Comment.find({
@@ -117,7 +126,12 @@ export const getAllComments = async (req, res) => {
     }
 }
 
-
+/**
+ * Add a reply to the comment
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const addReply = async (req, res) => {
     try {
         const {parentComment, comment} = req.body;
@@ -171,6 +185,12 @@ export const addReply = async (req, res) => {
     }
 }
 
+/**
+ * Add a subreply to a comment
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const addSubReply = async (req, res) => {
     try {
         const {commentId, subReplyPosition, comment, replyTo} = req.body;
@@ -232,6 +252,12 @@ export const addSubReply = async (req, res) => {
     }
 }
 
+/**
+ * Like or remove like from a comment
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const likeComment = async (req, res) => {
     try {
         const {likeType, commentId, remove} = req.body;
@@ -292,6 +318,12 @@ export const likeComment = async (req, res) => {
     }
 }
 
+/**
+ * Delete a comment by id
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const deleteComment = async (req, res) => {
     try {
         const {commentId} = req.params;
@@ -319,6 +351,12 @@ export const deleteComment = async (req, res) => {
     }
 }
 
+/**
+ * Delete a reply to a comment
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const deleteReply = async (req, res) => {
     try {
         console.log(req.params);
@@ -350,6 +388,12 @@ export const deleteReply = async (req, res) => {
     }
 }
 
+/**
+ * Delete a subreply from a comment
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const deleteSubReply = async (req, res) => {
     try {
         const {subReplyId, replyId, parentId} = req.params;

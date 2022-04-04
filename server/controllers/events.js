@@ -1,6 +1,12 @@
 import Event from "../models/event.js";
 import {DateTime} from "luxon";
 
+/**
+ * Add a new event
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const addEvent = async (req, res) => {
     try {
         const {name, startDate, description, image} = req.body;
@@ -31,6 +37,12 @@ export const addEvent = async (req, res) => {
     }
 }
 
+/**
+ * Get all events from the database
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const getAllEvents = async (req, res) => {
     try {
         const events = await Event.find().sort({createdAt: "desc"});
@@ -59,6 +71,12 @@ export const getAllEvents = async (req, res) => {
     }
 }
 
+/**
+ * Edit the data of the event
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const editEvent = async (req, res) => {
     try {
         const {id, name, startDate, description, image} = req.body;
@@ -87,6 +105,12 @@ export const editEvent = async (req, res) => {
     }
 }
 
+/**
+ * Delete an event
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const deleteEvent = async (req, res) => {
     try {
         const {id} = req.params;
@@ -109,6 +133,12 @@ export const deleteEvent = async (req, res) => {
     }
 }
 
+/**
+ * Add an event attendance to an event
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const addAttendance = async (req, res) => {
     try {
         const {id} = req.params;

@@ -1,10 +1,16 @@
 import * as api from '../api/index';
 import {ADD_EVENT, DELETE_EVENT, EDIT_EVENT, GET_EVENTS, UPDATE_ATTENDANCE} from "../Constants/actions";
 
-
+/**
+ * Add event action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setEventAlertMessage
+ * @param newEvent
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const addEvent = (setAlertMessage, navigate, setEventAlertMessage, newEvent) => async (dispatch) => {
     try {
-        console.log(newEvent);
         const {data} = await api.addEvent(newEvent);
         dispatch({type: ADD_EVENT, data});
         setEventAlertMessage({
@@ -29,6 +35,14 @@ export const addEvent = (setAlertMessage, navigate, setEventAlertMessage, newEve
     }
 }
 
+/**
+ * Get events action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setEventAlertMessage
+ * @param setEventsLoading
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const getAllEvents = (setAlertMessage, navigate, setEventAlertMessage, setEventsLoading) => async (dispatch) => {
     try {
         const {data} = await api.getAllEvents();
@@ -56,6 +70,14 @@ export const getAllEvents = (setAlertMessage, navigate, setEventAlertMessage, se
     }
 }
 
+/**
+ * Edit event action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setEventAlertMessage
+ * @param event
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const editEvent = (setAlertMessage, navigate, setEventAlertMessage, event) => async (dispatch) => {
     try {
         const {data} = await api.editEvent(event);
@@ -78,6 +100,14 @@ export const editEvent = (setAlertMessage, navigate, setEventAlertMessage, event
     }
 }
 
+/**
+ * Delete event action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setEventAlertMessage
+ * @param id
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const deleteEvent = (setAlertMessage, navigate, setEventAlertMessage, id) => async (dispatch) => {
     try {
         console.log(id);
@@ -101,6 +131,14 @@ export const deleteEvent = (setAlertMessage, navigate, setEventAlertMessage, id)
     }
 }
 
+/**
+ * Update attendance action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setEventAlertMessage
+ * @param id
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const updateAttendance = (setAlertMessage, navigate, setEventAlertMessage, id) => async (dispatch) => {
     try {
         const {data} = await api.updateAttendance(id);

@@ -15,14 +15,17 @@ const Reply = ({
                    handleReplyDelete,
                    handleSubReplyDeleteSubmit
                }) => {
+    //Hooks
     const theme = useTheme();
 
+    //States
     const [newSubReply, setNewSubReply] = useState({
         id: '',
         message: ''
     });
     const [toggleReply, setToggleReply] = useState(false);
 
+    //Handlers
     const handleToggleReply = () => {
         setToggleReply((prev) => !prev);
     }

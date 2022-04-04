@@ -11,20 +11,12 @@ import Events from "./Components/Home/Events/Events";
 
 const App = () => {
 
+    //States
     const [pageLoading, setPageLoading] = useState(true);
-
-
-    /**
-     * Alert message state
-     */
     const [alertMessage, setAlertMessage] = useState({
         type: '',
         message: ''
     });
-
-    /**
-     * User object state
-     */
     const [user, setUser] = useState({
         id: '',
         firstName: '',

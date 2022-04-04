@@ -21,16 +21,17 @@ import {useNavigate} from "react-router-dom";
 import CustomDialog from "../../Helper/Dialog";
 import Dropzone from "react-dropzone";
 import {DropzoneContainer} from "../Hub/Components/Comments";
+import {USERNAME_LIMIT} from "../../../Constants/general";
 
 
 const Profile = ({user, setUser, setAlertMessage}) => {
 
+    //Hooks
     const theme = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const USERNAME_LIMIT = 15;
-
+    //States
     const [imageAlertMessage, setImageAlertMessage] = useState({
         type: '',
         message: ''
@@ -46,7 +47,7 @@ const Profile = ({user, setUser, setAlertMessage}) => {
     })
 
     const [userForm, setUserForm] = useState(user);
-    const [toggleEdit, setToogleEdit] = useState(false);
+    const [toggleEdit, setToggleEdit] = useState(false);
     const [bottomLoading, setBottomLoading] = useState(false);
     const [passwordData, setPasswordData] = useState({
         oldPassword: '',
@@ -56,9 +57,9 @@ const Profile = ({user, setUser, setAlertMessage}) => {
     const [passwordDialogOpen, setPasswordDialogOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [dialogButtonLoading, setDialogButtonLoading] = useState(false);
-
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
+    //Handlers
     const handleImageUpload = (base64) => {
         console.log(base64);
         if (!base64[0].type.includes('image')) {
@@ -94,11 +95,11 @@ const Profile = ({user, setUser, setAlertMessage}) => {
     }
 
     const handleEdit = () => {
-        setToogleEdit((prevState) => !prevState);
+        setToggleEdit((prevState) => !prevState);
     }
 
     const handleCancel = () => {
-        setToogleEdit((prev) => !prev);
+        setToggleEdit((prev) => !prev);
         resetAlertMessage();
         setUserForm(user);
     }
@@ -116,13 +117,10 @@ const Profile = ({user, setUser, setAlertMessage}) => {
             setAlertMessage, setProfileAlertMessage,
             setBottomLoading,
             setUser,
-            setUserForm, setToogleEdit
+            setUserForm, setToggleEdit
         ));
     }
 
-    /**
-     * Helper function to reset the state of the alert message
-     */
     const resetAlertMessage = () => {
         setProfileAlertMessage({
             type: '',

@@ -24,24 +24,12 @@ import {useNavigate} from "react-router-dom";
  * @constructor
  */
 const Login = ({alertMessage, setAlertMessage}) => {
-    /**
-     * Dispatch Hook
-     * @type {Dispatch<any>}
-     */
+    //Hooks
     const dispatch = useDispatch();
-    /**
-     * Navigate Hook
-     */
     const navigate = useNavigate();
-
-    /**
-     * Hook to retrieve userResponse
-     */
     const userResponse = useSelector((state) => state.auth);
 
-    /**
-     * Input data control
-     */
+    //States
     const [inputData, setInputData] = useState({
         username: '',
         password: '',
@@ -50,50 +38,26 @@ const Login = ({alertMessage, setAlertMessage}) => {
         confirmPassword: ''
     })
 
-    /**
-     * Show password state
-     */
     const [isPassword, setIsPassword] = useState(true);
-
-    /**
-     * Register view control
-     */
     const [isRegister, setIsRegister] = useState(false);
-
-    /**
-     * State that controls the display of the loading bar
-     */
     const [loading, setLoading] = useState(false);
 
-    /**
-     * Show password toggle
-     */
+    //Handlers
     const handleShowPassword = () => {
         setIsPassword((prev) => !prev);
     }
 
-    /**
-     * Toggle Register
-     */
     const handleRegister = () => {
         setIsRegister((prev) => !prev);
         resetAlertMessage();
     }
 
-    /**
-     * Handle input change event
-     * @param e - Event
-     */
     const handleInputChange = (e) => {
         setInputData({
             ...inputData, [e.target.name]: e.target.value
         });
     }
 
-    /**
-     * Handles the form submit event
-     * @param e - Form Submit
-     */
     const handleSubmit = (e) => {
         e.preventDefault();
         setLoading(true);
@@ -105,9 +69,6 @@ const Login = ({alertMessage, setAlertMessage}) => {
         }
     }
 
-    /**
-     * Helper function to reset the state of the alert message
-     */
     const resetAlertMessage = () => {
         setAlertMessage({
             type: '',
@@ -115,9 +76,7 @@ const Login = ({alertMessage, setAlertMessage}) => {
         });
     }
 
-    /**
-     * Check for token, and navigate to home page if already logged in
-     */
+    //useEffect that checks whether the user is authenticated, redirect if true
     useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
@@ -125,6 +84,7 @@ const Login = ({alertMessage, setAlertMessage}) => {
         }
     }, []);
 
+    //useEffect that monitors the response from the users endpoint
     useEffect(() => {
         if (userResponse.message) {
             setLoading(false);

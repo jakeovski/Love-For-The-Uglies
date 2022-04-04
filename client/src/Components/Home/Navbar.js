@@ -4,9 +4,12 @@ import {useLocation, useNavigate} from "react-router-dom";
 
 
 const Navbar = () => {
+    //Hooks
     const theme = useTheme();
     const location = useLocation();
     const navigate = useNavigate();
+
+    //Variables
     const isHub = location.pathname === '/home/hub';
     const isEvent = location.pathname === '/home/events';
 

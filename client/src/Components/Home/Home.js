@@ -13,19 +13,18 @@ import Navbar from "./Navbar";
  */
 const Home = ({pageLoading, setPageLoading, user, setUser, setAlertMessage}) => {
 
-    /**
-     * Navigation Hook
-     */
+    //Hooks
     const navigate = useNavigate();
-
     const location = useLocation();
-
-    /**
-     * Dispatch Hook
-     * @type {Dispatch<any>}
-     */
     const dispatch = useDispatch();
 
+    //useEffects
+
+    /*
+    * useEffect to check if the user is authenticated
+    * if yes => fetch user data
+    * if no => return to login screen
+     */
     useEffect(() => {
         const token = localStorage.getItem("token");
         try {
@@ -41,6 +40,9 @@ const Home = ({pageLoading, setPageLoading, user, setUser, setAlertMessage}) => 
         }
     }, []);
 
+    /*
+    *   Redirect if the route is /home
+     */
     useEffect(() => {
         if (location.pathname === '/home') navigate('/home/hub');
     }, [location]);

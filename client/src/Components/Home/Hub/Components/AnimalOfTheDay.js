@@ -8,18 +8,21 @@ import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 
 const AnimalOfTheDay = () => {
+    //Hooks
     const dispatch = useDispatch();
     const theme = useTheme();
     const animalOfTheDay = useSelector((state) => state.animalOfTheDay);
+
+    //States
     const [animalAlertMessage, setAnimalAlertMessage] = useState({
         type: '',
         message: ''
     });
     const [animalLoading, setAnimalLoading] = useState(false);
 
+    //Data fetch useEffect
     useEffect(() => {
         if (!animalOfTheDay.name) {
-            console.log('I am dispatching');
             setAnimalLoading(true);
             dispatch(getAnimalOfTheDay(setAnimalAlertMessage, setAnimalLoading));
         }

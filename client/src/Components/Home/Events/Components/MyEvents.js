@@ -4,8 +4,10 @@ import Event from "./Event";
 
 
 const MyEvents = ({allEvents, user, setNewEvent, handleDeleteEvent, handleUpdateAttendance, role}) => {
+    //States
     const [myEvents, setMyEvents] = useState([]);
 
+    //useEffect that retrieves user's events from allEvents
     useEffect(() => {
         setMyEvents(allEvents.filter((event) => event.event.going.includes(user.id)));
     }, [allEvents])

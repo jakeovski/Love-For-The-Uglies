@@ -1,3 +1,4 @@
+//General constants used throughout the application
 export const conservationStatus = {
     EX: 'black',
     EW: 'black',
@@ -26,3 +27,5 @@ export const conservationStatusNames = {
 export const MAX_COMMENT_LENGTH = 200;
 
 export const MAX_EVENT_LENGTH = 50;
+
+export const USERNAME_LIMIT = 15;

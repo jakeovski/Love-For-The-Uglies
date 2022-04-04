@@ -4,12 +4,14 @@ import headerImage from '../../images/headerLogo.svg';
 import {Link, useNavigate} from "react-router-dom";
 
 const Header = ({user, setAlertMessage}) => {
+    //Hooks
     const theme = useTheme();
-
-    const [anchorElUser, setAnchorElUser] = useState(null);
-
     const navigate = useNavigate();
 
+    //States
+    const [anchorElUser, setAnchorElUser] = useState(null);
+
+    //Handlers
     const handleMenuOpen = (e) => {
         setAnchorElUser(e.currentTarget);
     }
@@ -18,9 +20,6 @@ const Header = ({user, setAlertMessage}) => {
         setAnchorElUser(null);
     }
 
-    /**
-     * Logout the user
-     */
     const logout = () => {
         localStorage.removeItem("token");
         navigate('/');

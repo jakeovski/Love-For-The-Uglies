@@ -6,9 +6,13 @@ import defaultImage from "../../../../images/profile.svg";
 
 
 const EventPopularity = ({allEvents}) => {
+    //States
     const [data, setData] = useState([]);
     const theme = useTheme();
 
+    /**
+     * useEffect that creates a data object for the graph from allEvents object
+     */
     useEffect(() => {
         let dataObject = [];
         for (let event of allEvents) {
@@ -22,6 +26,7 @@ const EventPopularity = ({allEvents}) => {
         setData(dataObject);
     }, [allEvents]);
 
+    //Comparator helper function
     const compare = (a, b) => {
         if (a.popularity < b.popularity) {
             return 1;

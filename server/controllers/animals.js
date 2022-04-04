@@ -1,6 +1,12 @@
 import UglyAnimal from "../models/uglyAnimal.js";
 import {DateTime} from "luxon";
 
+/**
+ * Retrieves the today's animal
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const getAnimals = async (req, res) => {
     try {
         const today = DateTime.now().get("day");
@@ -24,6 +30,12 @@ export const getAnimals = async (req, res) => {
     }
 }
 
+/**
+ * Additional route to add an animal to database
+ * @param req
+ * @param res
+ * @returns {Promise<*>}
+ */
 export const addAnimalToDb = async (req, res) => {
     try {
         const {day, name, image, description, source, endangered} = req.body;

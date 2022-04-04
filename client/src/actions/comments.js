@@ -12,7 +12,14 @@ import {
     LIKE
 } from "../Constants/actions";
 
-
+/**
+ * Add comment action creator
+ * @param newComment
+ * @param setCommentAlertMessage
+ * @param setAlertMessage
+ * @param navigate
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const addComment = (newComment, setCommentAlertMessage, setAlertMessage, navigate) => async (dispatch) => {
     try {
         const {data} = await api.addComment(newComment);
@@ -39,6 +46,14 @@ export const addComment = (newComment, setCommentAlertMessage, setAlertMessage, 
     }
 }
 
+/**
+ * Get all comments action creator
+ * @param setAlertMessage
+ * @param setChatAlertMessage
+ * @param navigate
+ * @param setCommentsLoading
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const getAllComments = (setAlertMessage, setChatAlertMessage, navigate, setCommentsLoading) => async (dispatch) => {
     try {
         const {data} = await api.getAllComments();
@@ -63,11 +78,20 @@ export const getAllComments = (setAlertMessage, setChatAlertMessage, navigate, s
     }
 }
 
+/**
+ * Add a reply action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setCommentsLoading
+ * @param setChatAlertMessage
+ * @param parentComment
+ * @param comment
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const addReply = (setAlertMessage, navigate, setCommentsLoading, setChatAlertMessage,
                          parentComment,
                          comment) => async (dispatch) => {
     try {
-        console.log(comment);
         const {data} = await api.addReply(parentComment, comment);
         if (comment.id) {
             dispatch({type: EDIT_REPLY, data});
@@ -93,6 +117,18 @@ export const addReply = (setAlertMessage, navigate, setCommentsLoading, setChatA
     }
 }
 
+/**
+ * Add subreply action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setCommentsLoading
+ * @param setChatAlertMessage
+ * @param commentId
+ * @param subReplyPosition
+ * @param comment
+ * @param replyTo
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const addSubReply = (setAlertMessage,
                             navigate,
                             setCommentsLoading,
@@ -101,7 +137,6 @@ export const addSubReply = (setAlertMessage,
                             subReplyPosition,
                             comment, replyTo) => async (dispatch) => {
     try {
-        console.log(comment);
         const {data} = await api.addSubReply(commentId, subReplyPosition, comment, replyTo);
         dispatch({type: ADD_SUBREPLY, data});
     } catch (error) {
@@ -123,6 +158,16 @@ export const addSubReply = (setAlertMessage,
     }
 }
 
+/**
+ * Like action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setChatAlertMessage
+ * @param likeType
+ * @param commentId
+ * @param remove
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const likeComment = (setAlertMessage, navigate, setChatAlertMessage,
                             likeType, commentId, remove) => async (dispatch) => {
     try {
@@ -146,9 +191,18 @@ export const likeComment = (setAlertMessage, navigate, setChatAlertMessage,
     }
 }
 
+/**
+ * Delete comment or reply action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setChatAlertMessage
+ * @param commentId
+ * @param isReply
+ * @param parent
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const deleteComment = (setAlertMessage, navigate, setChatAlertMessage, commentId, isReply, parent) => async (dispatch) => {
     try {
-        console.log(commentId);
         if (isReply) {
             const {data} = await api.deleteReply(commentId, parent);
             dispatch({type: DELETE_REPLY, payload: {data, parent}});
@@ -174,6 +228,16 @@ export const deleteComment = (setAlertMessage, navigate, setChatAlertMessage, co
     }
 }
 
+/**
+ * Delete subreply action creator
+ * @param setAlertMessage
+ * @param navigate
+ * @param setChatAlertMessage
+ * @param subReplyId
+ * @param replyId
+ * @param parentId
+ * @returns {(function(*): Promise<void>)|*}
+ */
 export const deleteSubReply = (setAlertMessage, navigate, setChatAlertMessage,
                                subReplyId, replyId, parentId) => async (dispatch) => {
     try {

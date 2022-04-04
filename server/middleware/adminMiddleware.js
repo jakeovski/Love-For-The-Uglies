@@ -1,3 +1,10 @@
+/**
+ * Middleware that checks whether the requester is an admin
+ * @param req
+ * @param res
+ * @param next
+ * @returns {Promise<*>}
+ */
 const adminMiddleware = async (req, res, next) => {
     if (req.role) {
         if (req.role !== 'admin') {

@@ -13,13 +13,16 @@ import {Edit} from "@mui/icons-material";
 
 
 const AddEvent = ({handleAddEvent, newEvent, setNewEvent, handleEditEvent}) => {
+    //Hooks
     const theme = useTheme();
 
+    //States
     const [newEventAlert, setNewEventAlert] = useState({
         type: '',
         message: ''
     })
 
+    //Handlers
     const handleImageUpload = (base64) => {
         if (!base64[0].type.includes('image')) {
             setNewEventAlert({

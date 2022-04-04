@@ -31,7 +31,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import Comment from "./Comment";
 
-
+//Dropzone styling
 export const DropzoneContainer = styled('div')(({theme}) => ({
     alignItems: 'center',
     padding: '5px',
@@ -49,10 +49,13 @@ export const DropzoneContainer = styled('div')(({theme}) => ({
 }));
 
 const Comments = ({user, setAlertMessage}) => {
+    //Hooks
     const theme = useTheme();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const comments = useSelector((state) => state.comments);
+
+    //States
     const [newComment, setNewComment] = useState({
         id: '',
         comment: '',
@@ -75,6 +78,7 @@ const Comments = ({user, setAlertMessage}) => {
 
     const [commentsLoading, setCommentsLoading] = useState(false);
 
+    //Handlers
     const handleImageUpload = (base64) => {
         if (!base64[0].type.includes('image')) {
             setImageAlertMessage({
@@ -121,13 +125,6 @@ const Comments = ({user, setAlertMessage}) => {
         handleClearButton();
     }
 
-    useEffect(() => {
-        if (!comments.length > 0) {
-            setCommentsLoading(true);
-            dispatch(getAllComments(setAlertMessage, setChatAlertMessage, navigate, setCommentsLoading));
-        }
-    }, []);
-
     const handleReplySubmit = (parentComponent, comment) => {
         dispatch(addReply(setAlertMessage, navigate, setCommentsLoading, setChatAlertMessage,
             parentComponent, comment));
@@ -159,6 +156,14 @@ const Comments = ({user, setAlertMessage}) => {
     const handleSubReplyDeleteSubmit = (subReplyId, replyId, parentId) => {
         dispatch(deleteSubReply(setAlertMessage, navigate, setChatAlertMessage, subReplyId, replyId, parentId));
     }
+
+    //Data fetch useEffect
+    useEffect(() => {
+        if (!comments.length > 0) {
+            setCommentsLoading(true);
+            dispatch(getAllComments(setAlertMessage, setChatAlertMessage, navigate, setCommentsLoading));
+        }
+    }, []);
 
     return (
         <Paper elevation={3} sx={{

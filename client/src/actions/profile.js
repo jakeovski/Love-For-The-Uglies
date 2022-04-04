@@ -1,6 +1,18 @@
 import * as api from '../api';
 
 
+/**
+ * @param oldUsername
+ * @param newUserData
+ * @param navigate
+ * @param setAlertMessage
+ * @param setProfileAlertMessage
+ * @param setBottomLoading
+ * @param setUser
+ * @param setUserForm
+ * @param setToggleEdit
+ * @returns {(function(): Promise<void>)|*}
+ */
 export const editProfile = (oldUsername,
                             newUserData,
                             navigate,
@@ -45,6 +57,15 @@ export const editProfile = (oldUsername,
     }
 }
 
+/**
+ * @param passwordData
+ * @param setDialogButtonLoading
+ * @param setAlertMessage
+ * @param navigate
+ * @param setDialogAlertMessage
+ * @param setPasswordDialogOpen
+ * @returns {(function(): Promise<void>)|*}
+ */
 export const changePassword = (passwordData, setDialogButtonLoading,
                                setAlertMessage, navigate,
                                setDialogAlertMessage,
@@ -72,7 +93,14 @@ export const changePassword = (passwordData, setDialogButtonLoading,
     }
 }
 
-
+/**
+ * @param setDialogButtonLoading
+ * @param setAlertMessage
+ * @param navigate
+ * @param setDialogAlertMessage
+ * @param setDeleteDialogOpen
+ * @returns {(function(): Promise<void>)|*}
+ */
 export const deleteAccount = (setDialogButtonLoading,
                               setAlertMessage, navigate, setDialogAlertMessage, setDeleteDialogOpen) => async () => {
     try {

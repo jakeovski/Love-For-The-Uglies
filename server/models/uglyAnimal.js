@@ -1,6 +1,9 @@
 import mongoose from "mongoose";
 
-
+/**
+ * MongoDB model for the dailyUglyAnimal
+ * @type {*}
+ */
 const uglyAnimal = mongoose.Schema({
     id: {
         type: String,
