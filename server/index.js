@@ -26,5 +26,5 @@ app.use('/api/events', eventsRoutes);
 
 //Connect to the database
 mongoose.connect(process.env.CONNECTION_URL)
-    .then(() => app.listen(process.env.SERVER_PORT, () => console.log(`Server started at port ${process.env.SERVER_PORT}`)))
+    .then(() => app.listen(process.env.PORT, () => console.log(`Server started at port ${process.env.PORT}`)))
     .catch((error) => console.log(error));

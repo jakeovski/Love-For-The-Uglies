@@ -5,7 +5,7 @@ import adminMiddleware from "../middleware/adminMiddleware.js";
 
 const router = express.Router();
 
-router.post('/add', authMiddleware, addEvent);
+router.post('/add', authMiddleware,adminMiddleware, addEvent);
 router.get('/', authMiddleware, getAllEvents);
 router.patch('/edit', authMiddleware, adminMiddleware, editEvent);
 router.delete('/delete/:id', authMiddleware, adminMiddleware, deleteEvent);
